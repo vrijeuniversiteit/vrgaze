@@ -8,6 +8,8 @@ novices = load_condition("Novices", "example_data/tennis_data/experimental_condi
 
 data = ExperimentalData([experts, novices])
 
+
+
 from vrgaze.tennis.plots import plot_3d, plot_birdview, plot_side
 
 plot = plot_3d(data)
@@ -15,8 +17,6 @@ plot.show()
 
 plot = plot_birdview(data)
 plot.show()
-
-
 
 plot_side(data)
 plt.show()

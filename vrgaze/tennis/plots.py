@@ -3,10 +3,15 @@ from matplotlib import pyplot as plt
 from vrgaze.tennis.analysis import Trajectory
 from vrgaze.tennis.models import ExperimentalData
 
+plt.style.use(['vrgaze/style.mplstyle'])
 
 def plot_3d(data: ExperimentalData):
 	trajectories = []
+
+
 	ax = plt.axes(projection='3d')
+	greys = ['#000000', '#333333', '#666666', '#999999']
+	ax.prop_cycle = 'cycler(color, ' + str(greys) + ')'
 
 	for trial in data.conditions[0].participants[0].trials:
 		width = [frame.ball_position_x for frame in trial.frames]
@@ -16,9 +21,6 @@ def plot_3d(data: ExperimentalData):
 	for trajectory in trajectories:
 		ax.plot3D(trajectory.width, trajectory.length, trajectory.height)
 
-	ax.set_xlabel("Width [m]")
-	ax.set_ylabel("Length [m]")
-	ax.set_zlabel("Height [m]")
 
 	half_width = 10.97 / 2
 	half_length = 23.77 / 2
@@ -56,6 +58,9 @@ def plot_3d(data: ExperimentalData):
 
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)
+
+
+
 	return plt
 
 
@@ -111,7 +116,7 @@ def plot_side(data: ExperimentalData):
 	fig, ax = plt.subplots()
 	ax.set_aspect('equal')
 	ax.set_xlabel("Width [m]")
-	ax.set_ylabel("Length [m]")
+	ax.set_ylabel("Height [m]")
 
 	half_court = 23.77 / 2
 	ax.plot([-half_court, half_court], [0, 0], color="black", linewidth=1)
