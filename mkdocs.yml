@@ -1,0 +1,20 @@
+site_name: VR Gaze
+site_url: https://github.com/vrijeuniversiteit/vrgaze
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Tennis: tennis.md # All classes with docstrings """ are discovered
+
+plugins:
+  - search
+  - mkdocstrings:
+      watch:
+        - vrgaze
+      handlers:
+        python: # Needs to have a handler so that classes are discovered
+          options:
+            show_source: true
+            show_submodules: true
+
