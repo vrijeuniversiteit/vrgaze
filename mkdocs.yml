@@ -2,6 +2,10 @@ site_name: VR Gaze
 site_url: https://github.com/vrijeuniversiteit/vrgaze
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/images/logo_inv.png
+  palette:
+    primary: blue
 
 nav:
   - Home: index.md
