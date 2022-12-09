@@ -1,12 +1,40 @@
 from dataclasses import dataclass
+from typing import List
+
+
+@dataclass
+class Frame:
+	timestamp: float
+	ball_position_x: float
+	ball_position_y: float
+	ball_position_z: float
+
 
 
 @dataclass
 class Trial:
-	"""A single trial of a tennis match.
+	participant_id: int
+	test_id: int
+	block_number: int
+	ball_number: int
+	frames: List[Frame]
 
-	Args:
-		participant_name (str): The name of the participant.
-		id (int): The trial id.
-	"""
-	participant_name: str
+
+@dataclass
+class Participant:
+	participant_id: int
+	trials: List[Trial]
+
+
+@dataclass
+class ConditionData:
+	name: str
+	participants: List[Participant]
+
+	def __repr__(self):
+		return f"Name={self.name}, Participants={len(self.participants)})"
+
+
+@dataclass
+class ExperimentalData:
+	conditions: List[ConditionData]
