@@ -6,7 +6,7 @@ from vrgaze.tennis.models.eventmodel import PredictiveSaccade
 
 @dataclass
 class CSVWriter(Visitor):
-	filepath: str
+	condition: str
 	data: List[str] = field(default_factory=list)
 
 	def visit(self, visitable: Visitable):
@@ -17,5 +17,6 @@ class CSVWriter(Visitor):
 		test_id = trial.test_id
 		predictive_saccades = [event for event in trial.gaze_events if isinstance(event, PredictiveSaccade)]
 		for saccade in predictive_saccades:
-			self.data.append([participant, ball_number, block_number, test_id, saccade.timestamp, saccade.angle_amplitude, saccade.angle_start, saccade.angle_end])
+			self.data.append([self.condition, participant, ball_number, block_number, test_id, saccade.timestamp,
+							  saccade.angle_amplitude, saccade.angle_start, saccade.angle_end])
 

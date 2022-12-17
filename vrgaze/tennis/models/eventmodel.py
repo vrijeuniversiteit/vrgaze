@@ -1,12 +1,11 @@
 from dataclasses import dataclass
 
-from vrgaze.tennis.models.datamodel import Frame
 
 
 @dataclass
 class Event:
 	timestamp: float
-	frame: Frame
+	frame: "Frame"
 
 
 class BallCrossesNetAfterServe(Event):
@@ -23,7 +22,7 @@ class FirstBounceEvent(Event):
 
 @dataclass
 class Saccade(Event):
-	start_frame: Frame
+	start_frame: "Frame"
 	angle_amplitude: float
 	angle_start: float
 	angle_end: float

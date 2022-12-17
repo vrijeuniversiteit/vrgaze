@@ -73,15 +73,15 @@ class ExperimentalData(Visitable):
 		else:
 			self.conditions = [data]
 
-	def to_csv(self, visitor: "Visitor"):
+	def to_csv(self, filepath: str):
 		data = []
 		for condition in self.conditions:
 			exporter = CSVWriter(condition.name)
 			condition.analyze(exporter)
-			data.extend(visitor.data)
+			data.extend(exporter.data)
 
 		import csv
-		with open("example_data/tennis_data/example_results.csv", 'w', newline='') as csvfile:
+		with open(filepath, 'w', newline='') as csvfile:
 			writer = csv.writer(csvfile, delimiter=',')
 			for row in data:
 				writer.writerow(row)
