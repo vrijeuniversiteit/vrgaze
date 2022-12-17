@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 
 @dataclass
@@ -38,3 +38,10 @@ class ConditionData:
 @dataclass
 class ExperimentalData:
 	conditions: List[ConditionData]
+
+	def __init__(self, data: Union[List[ConditionData], ConditionData]):
+		if isinstance(data, list):
+			self.conditions = data
+		else:
+			self.conditions = [data]
+

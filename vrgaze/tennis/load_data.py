@@ -1,4 +1,4 @@
-from vrgaze.tennis.models import ConditionData
+from vrgaze.tennis.datamodel import ConditionData
 from vrgaze.tennis.read import Reader
 
 
