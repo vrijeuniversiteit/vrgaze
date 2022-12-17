@@ -1,11 +1,12 @@
 from matplotlib import pyplot as plt
 
 from vrgaze.tennis.models.datamodel import ExperimentalData, Trajectory
+from vrgaze.tennis.models.eventmodel import PredictiveSaccade, FirstBounceEvent
 
 plt.style.use(['vrgaze/style.mplstyle'])
 
 
-def plot_3d(data: ExperimentalData):
+def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False):
 	trajectories = []
 
 	ax = plt.axes(projection='3d')
@@ -53,6 +54,24 @@ def plot_3d(data: ExperimentalData):
 	# net posts
 	ax.plot([-half_net_width, -half_net_width], [0, 0], [0, 1.065], color='black')
 	ax.plot([half_net_width, half_net_width], [0, 0], [0, 1.065], color='black')
+
+	if show_predictive_saccades:
+		ball_bounce_events = [e for e in trial.ball_events if isinstance(e, FirstBounceEvent)]
+
+		for trial in data.conditions[0].participants[0].trials:
+			predictive_saccades = trial.gaze_events
+			for saccade in predictive_saccades:
+				if isinstance(saccade, PredictiveSaccade):
+
+					start_x = saccade.start_frame.ball_position_x
+					start_y = saccade.start_frame.ball_position_z
+					start_z = saccade.start_frame.ball_position_y
+					ax.scatter3D(start_x, start_y, start_z, color='green', marker='o', s=20, alpha=0.5)
+					end_x = saccade.frame.ball_position_x
+					end_y = saccade.frame.ball_position_z
+					end_z = saccade.frame.ball_position_y
+					# filled point green at end
+					ax.scatter3D(end_x, end_y, end_z, color='green', marker='o', s=20, alpha=1)
 
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)

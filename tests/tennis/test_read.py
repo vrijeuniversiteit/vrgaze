@@ -33,6 +33,17 @@ class TestReadFiles(TestReader):
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants), 2)
 
+	def test_should_read_tobii_gazeorigin_and_direction(self):
+		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.read_files()
+		first_frame = self.reader.participants[0].trials[0].frames[0]
+		self.assertEqual(first_frame.gaze_origin_x, 0.1023313)
+		self.assertEqual(first_frame.gaze_origin_y, 1.76664)
+		self.assertEqual(first_frame.gaze_origin_z, -11.76237)
+		self.assertEqual(first_frame.gaze_direction_x, -0.01645234)
+		self.assertEqual(first_frame.gaze_direction_y, 0.05927261)
+		self.assertEqual(first_frame.gaze_direction_z, 0.9981007)
+
 class TestValidator(TestCase):
 	def test_should_throw_error_if_header_is_different(self):
 		expected_header = 'participant_id,test_id,block_number,ball_number,timestamp,ball_position_x,ball_position_y,' \

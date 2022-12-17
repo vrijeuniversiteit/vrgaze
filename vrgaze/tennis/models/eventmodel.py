@@ -19,3 +19,17 @@ class BallHitWithRacket(Event):
 
 class FirstBounceEvent(Event):
 	pass
+
+
+@dataclass
+class Saccade(Event):
+	start_frame: Frame
+	angle_amplitude: float
+	angle_start: float
+	angle_end: float
+
+class PredictiveSaccade(Saccade):
+	pass
+
+class CorrectiveSaccade(Saccade):
+	pass

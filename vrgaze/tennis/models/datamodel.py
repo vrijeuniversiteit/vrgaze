@@ -1,18 +1,8 @@
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Union
 
-
-class Visitable(ABC):
-	@abstractmethod
-	def detect(self, visitor: "Visitor"):
-		...
-
-
-class Visitor(ABC):
-	@abstractmethod
-	def visit(self, visitable: Visitable):
-		...
+from vrgaze.tennis.models.abstraction import Visitable
+from vrgaze.tennis.services.writer import CSVWriter
 
 
 @dataclass
@@ -21,6 +11,15 @@ class Frame:
 	ball_position_x: float
 	ball_position_y: float
 	ball_position_z: float
+	head_position_x: float
+	head_position_y: float
+	head_position_z: float
+	gaze_origin_x: float
+	gaze_origin_y: float
+	gaze_origin_z: float
+	gaze_direction_x: float
+	gaze_direction_y: float
+	gaze_direction_z: float
 
 
 @dataclass
@@ -30,8 +29,10 @@ class Trial(Visitable):
 	block_number: int
 	ball_number: int
 	frames: List[Frame]
+	ball_events: List["Event"] = field(default_factory=list)
+	gaze_events: List["Event"] = field(default_factory=list)
 
-	def detect(self, visitor: "Visitor"):
+	def analyze(self, visitor: "Visitor"):
 		visitor.visit(self)
 
 
@@ -40,9 +41,9 @@ class Participant(Visitable):
 	participant_id: int
 	trials: List[Trial]
 
-	def detect(self, visitor: "Visitor"):
+	def analyze(self, visitor: "Visitor"):
 		for trial in self.trials:
-			trial.detect(visitor)
+			trial.analyze(visitor)
 
 
 @dataclass
@@ -50,9 +51,9 @@ class ConditionData(Visitable):
 	name: str
 	participants: List[Participant]
 
-	def detect(self, visitor: "Visitor"):
+	def analyze(self, visitor: "Visitor"):
 		for participant in self.participants:
-			participant.detect(visitor)
+			participant.analyze(visitor)
 
 	def __repr__(self):
 		return f"Name={self.name}, Participants={len(self.participants)})"
@@ -62,15 +63,28 @@ class ConditionData(Visitable):
 class ExperimentalData(Visitable):
 	conditions: List[ConditionData]
 
-	def detect(self, visitor: "Visitor"):
+	def analyze(self, visitor: "Visitor"):
 		for condition in self.conditions:
-			condition.detect(visitor)
+			condition.analyze(visitor)
 
 	def __init__(self, data: Union[List[ConditionData], ConditionData]):
 		if isinstance(data, list):
 			self.conditions = data
 		else:
 			self.conditions = [data]
+
+	def to_csv(self, visitor: "Visitor"):
+		data = []
+		for condition in self.conditions:
+			exporter = CSVWriter(condition.name)
+			condition.analyze(exporter)
+			data.extend(visitor.data)
+
+		import csv
+		with open("example_data/tennis_data/example_results.csv", 'w', newline='') as csvfile:
+			writer = csv.writer(csvfile, delimiter=',')
+			for row in data:
+				writer.writerow(row)
 
 
 @dataclass

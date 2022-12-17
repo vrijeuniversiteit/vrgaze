@@ -1,5 +1,6 @@
 import glob
 import os
+from datetime import datetime
 
 from vrgaze.tennis.models.datamodel import Trial, Frame, Participant
 
@@ -39,14 +40,32 @@ class Reader:
 					end = ball_number_changes[i + 1] if i + 1 < len(ball_number_changes) else len(content)
 					frames = []
 					last_frame = 1
+
 					for line in content[start:end - last_frame]:
 						parts = line.split(",")
+
+						tobii_gazeray_origin_x = float(parts[50])
+						tobii_gazeray_origin_y = float(parts[51])
+						tobii_gazeray_origin_z = float(parts[52])
+						tobii_gazeray_direction_x = float(parts[53])
+						tobii_gazeray_direction_y = float(parts[54])
+						tobii_gazeray_direction_z = float(parts[55])
+
 						frames.append(
 							Frame(
 								timestamp=float(parts[4]),
 								ball_position_x=float(parts[5]),
 								ball_position_y=float(parts[6]),
-								ball_position_z=float(parts[7])
+								ball_position_z=float(parts[7]),
+								head_position_x=float(parts[82]),
+								head_position_y=float(parts[83]),
+								head_position_z=float(parts[84]),
+								gaze_origin_x=tobii_gazeray_origin_x,
+								gaze_origin_y=tobii_gazeray_origin_y,
+								gaze_origin_z=tobii_gazeray_origin_z,
+								gaze_direction_x=tobii_gazeray_direction_x,
+								gaze_direction_y=tobii_gazeray_direction_y,
+								gaze_direction_z=tobii_gazeray_direction_z,
 							)
 						)
 					trials.append(
