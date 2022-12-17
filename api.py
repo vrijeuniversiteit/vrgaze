@@ -1,14 +1,15 @@
 from matplotlib import pyplot as plt
 
 from vrgaze.tennis.load_data import load_condition
-from vrgaze.tennis.datamodel import ExperimentalData
+from vrgaze.tennis.models.datamodel import ExperimentalData
+from vrgaze.tennis.services.BallEvents import BallEvents
 
 experts = load_condition("Experts", "example_data/tennis_data/experimental_condition")
 novices = load_condition("Novices", "example_data/tennis_data/experimental_condition")
 
 data = ExperimentalData([experts, novices])
 
-
+data.detect(BallEvents())
 
 from vrgaze.tennis.plots import plot_3d, plot_birdview, plot_side
 

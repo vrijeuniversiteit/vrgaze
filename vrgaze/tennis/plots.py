@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 
 from vrgaze.tennis.analysis import Trajectory
-from vrgaze.tennis.datamodel import ExperimentalData
+from vrgaze.tennis.models.datamodel import ExperimentalData
 
 plt.style.use(['vrgaze/style.mplstyle'])
 

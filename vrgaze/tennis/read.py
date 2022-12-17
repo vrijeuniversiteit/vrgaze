@@ -1,7 +1,7 @@
 import glob
 import os
 
-from vrgaze.tennis.datamodel import Trial, Frame, Participant
+from vrgaze.tennis.models.datamodel import Trial, Frame, Participant
 
 class Reader:
 	def __init__(self):

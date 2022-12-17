@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from vrgaze.tennis.datamodel import Frame, Trial
-from vrgaze.tennis.eventmodel import BallEvents, BallHitWithRacket, FirstBounceEvent, BallCrossesNetAfterServe
+from vrgaze.tennis.models.datamodel import Frame, Trial
+from vrgaze.tennis.models.eventmodel import BallEvents, BallHitWithRacket, FirstBounceEvent, BallCrossesNetAfterServe
 
 
 class TrialBuilder:
@@ -53,18 +53,18 @@ class TestEvents(unittest.TestCase):
 
 	def test_detect_ball_crosses_net_returns_first_frame_after_ball_crosses_net(self):
 		events = BallEvents(trial)
-		events.detect_ball_crosses_net(trial)
+		events.detect_ball_crosses_net()
 		net_cross = events.get_events_of_type(BallCrossesNetAfterServe)[0]
 		self.assertEqual(net_cross.timestamp, 1)
 
 	def test_identify_hit_with_racket(self):
 		events = BallEvents(trial)
-		events.identify_hit_with_racket(trial)
+		events.identify_hit_with_racket()
 		self.assertTrue(events.contains(BallHitWithRacket))
 
 	def test_identify_bounce_event(self):
 		events = BallEvents(trial)
-		events.identify_bounce_event(trial)
+		events.identify_bounce_event()
 		self.assertTrue(events.contains(FirstBounceEvent))
 
 	def test_identify_hit_with_racket_without_racket_hit(self):
@@ -79,7 +79,7 @@ class TestEvents(unittest.TestCase):
 		trial_without_racket_hit = builder.build()
 
 		events = BallEvents(trial_without_racket_hit)
-		events.identify_hit_with_racket(trial_without_racket_hit)
+		events.identify_hit_with_racket()
 		self.assertFalse(events.contains(BallHitWithRacket))
 
 
@@ -97,7 +97,7 @@ class TestEvents(unittest.TestCase):
 		trial = builder.build()
 
 		events = BallEvents(trial)
-		events.identify_bounce_event(trial)
+		events.identify_bounce_event()
 		bounce_events = events.get_events_of_type(FirstBounceEvent)
 		self.assertEqual(len(bounce_events), 1)
 
@@ -113,7 +113,7 @@ class TestEvents(unittest.TestCase):
 		trial = builder.build()
 
 		events = BallEvents(trial)
-		events.identify_bounce_event(trial)
+		events.identify_bounce_event()
 		has_bounce_event = events.contains(FirstBounceEvent)
 		self.assertFalse(has_bounce_event)
 
@@ -129,7 +129,7 @@ class TestEvents(unittest.TestCase):
 		trial = builder.build()
 
 		events = BallEvents(trial)
-		events.identify_bounce_event(trial)
+		events.identify_bounce_event()
 		has_bounce_event = events.contains(FirstBounceEvent)
 		self.assertFalse(has_bounce_event)
 
