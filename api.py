@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from vrgaze.tennis.load_data import load_condition
+from vrgaze.tennis.services.load_data import load_condition
 from vrgaze.tennis.models.datamodel import ExperimentalData
 from vrgaze.tennis.services.BallEvents import BallEvents
 
@@ -11,7 +11,7 @@ data = ExperimentalData([experts, novices])
 
 data.detect(BallEvents())
 
-from vrgaze.tennis.plots import plot_3d, plot_birdview, plot_side
+from vrgaze.tennis.services.plots import plot_3d, plot_birdview, plot_side
 
 plot = plot_3d(data)
 plot.show()

@@ -1,9 +1,9 @@
 from matplotlib import pyplot as plt
 
-from vrgaze.tennis.analysis import Trajectory
-from vrgaze.tennis.models.datamodel import ExperimentalData
+from vrgaze.tennis.models.datamodel import ExperimentalData, Trajectory
 
 plt.style.use(['vrgaze/style.mplstyle'])
+
 
 def plot_3d(data: ExperimentalData):
 	trajectories = []
@@ -19,7 +19,6 @@ def plot_3d(data: ExperimentalData):
 		trajectories.append(Trajectory(length, height, width))
 	for trajectory in trajectories:
 		ax.plot3D(trajectory.width, trajectory.length, trajectory.height)
-
 
 	half_width = 10.97 / 2
 	half_length = 23.77 / 2
@@ -57,8 +56,6 @@ def plot_3d(data: ExperimentalData):
 
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)
-
-
 
 	return plt
 
@@ -114,7 +111,7 @@ def plot_birdview(data: ExperimentalData):
 def plot_side(data: ExperimentalData):
 	fig, ax = plt.subplots()
 	ax.set_aspect('equal')
-	ax.set_xlabel("Width [m]")
+	ax.set_xlabel("Length [m]")
 	ax.set_ylabel("Height [m]")
 
 	half_court = 23.77 / 2

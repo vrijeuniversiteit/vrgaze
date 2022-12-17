@@ -71,3 +71,10 @@ class ExperimentalData(Visitable):
 			self.conditions = data
 		else:
 			self.conditions = [data]
+
+
+@dataclass
+class Trajectory:
+	length: List[float]
+	height: List[float]
+	width: List[float]
