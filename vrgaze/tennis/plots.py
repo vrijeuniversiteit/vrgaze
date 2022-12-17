@@ -8,7 +8,6 @@ plt.style.use(['vrgaze/style.mplstyle'])
 def plot_3d(data: ExperimentalData):
 	trajectories = []
 
-
 	ax = plt.axes(projection='3d')
 	greys = ['#000000', '#333333', '#666666', '#999999']
 	ax.prop_cycle = 'cycler(color, ' + str(greys) + ')'

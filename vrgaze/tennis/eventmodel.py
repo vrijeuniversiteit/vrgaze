@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from vrgaze.tennis.datamodel import Trial, Frame
+from vrgaze.tennis.datamodel import Trial, Frame, ConditionData
+
 
 @dataclass
 class Event:
@@ -28,7 +29,7 @@ class BallEvents:
 
 	def detect_ball_crosses_net(self, trial: Trial):
 		z_positions = [frame.ball_position_z for frame in trial.frames]
-		index = next((i for i, x in enumerate(z_positions) if x > 0), None)
+		index = next((i for i, x in enumerate(z_positions) if x < 0), None)
 		timestamp = trial.frames[index].timestamp
 		frame = trial.frames[index]
 		self.Events.append(BallCrossesNetAfterServe(timestamp, frame))
@@ -37,8 +38,9 @@ class BallEvents:
 		z_positions = [frame.ball_position_z for frame in trial.frames]
 
 		derivative = [z_positions[i + 1] - z_positions[i] for i in range(len(z_positions) - 1)]
-		derivative.insert(0, 0)
-		change_of_direction_index = next((i for i, x in enumerate(derivative) if x < 0), None)
+
+		derivative.insert(0, derivative[0])
+		change_of_direction_index = next((i for i, x in enumerate(derivative) if x > 0), None)
 
 		if change_of_direction_index is None:
 			return
@@ -49,17 +51,34 @@ class BallEvents:
 
 	def identify_bounce_event(self, trial):
 		y_positions = [frame.ball_position_y for frame in trial.frames]
+		z_positions = [frame.ball_position_z for frame in trial.frames]
 
 		derivative = [y_positions[i + 1] - y_positions[i] for i in range(len(y_positions) - 1)]
-		derivative.insert(0, 0)
-		change_of_direction_index = next((i for i, x in enumerate(derivative) if x < 0), None)
+		derivative.append(0)
+
+		is_close_to_ground = [abs(y) < 0.5 for y in y_positions]
+		derivative_is_positive = [d > 0 for d in derivative]
+
+		change_of_direction_index = next((i for i, (d, y) in enumerate(zip(derivative_is_positive, is_close_to_ground)) if
+										 d and y), None)
 
 		if change_of_direction_index is None:
+			return
+		bounced_off_back_wall = z_positions[change_of_direction_index] < -15
+		bounced_off_tennis_net = -1 < z_positions[change_of_direction_index] < 1
+
+		if bounced_off_back_wall:
+			return
+
+		if bounced_off_tennis_net:
 			return
 
 		timestamp = trial.frames[change_of_direction_index].timestamp
 		frame = trial.frames[change_of_direction_index]
 		self.Events.append(FirstBounceEvent(timestamp, frame))
+
+	def get_events_of_type(self, FirstBounceEvent):
+		return [event for event in self.Events if isinstance(event, FirstBounceEvent)]
 
 
 

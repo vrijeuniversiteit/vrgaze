@@ -1,4 +1,5 @@
 from vrgaze.tennis.datamodel import ConditionData
+from vrgaze.tennis.eventmodel import BallEvents
 from vrgaze.tennis.read import Reader
 
 
@@ -25,8 +26,7 @@ def load_condition(name: str, folder_path: str) -> ConditionData:
 	reader.read_files()
 	condition = ConditionData(name, reader.participants)
 
-	# eventCalculator = EventCalculator()
-	# eventCalculator.calculate_events(condition)
-	# events = eventCalculator.events
+	events = BallEvents()
+	events.calculate_events(condition)
 
 	return condition
