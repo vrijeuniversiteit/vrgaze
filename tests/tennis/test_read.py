@@ -9,7 +9,7 @@ class TestReader(TestCase):
 
 class TestDiscoverFiles(TestReader):
 	def test_should_discover_example_file(self):
-		self.reader.discover_files("example_data/tennis_data")
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
 		self.assertEqual(self.reader.number_files, 1)
 
 	def test_should_raise_error_if_path_not_exists(self):
@@ -18,12 +18,12 @@ class TestDiscoverFiles(TestReader):
 
 class TestReadFiles(TestReader):
 	def test_should_find_two_trials(self):
-		self.reader.discover_files("example_data/tennis_data")
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials), 2)
 
 	def test_should_have_232_frames_for_first_trial(self):
-		self.reader.discover_files("example_data/tennis_data")
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials[0].frames), 232)
 
