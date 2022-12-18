@@ -27,5 +27,4 @@ jobs:
         python -m pip install --upgrade pip
     - name: Test with unittest
       run: |
-        cd request_handler
         python -m unittest discover  -p 'test_*.py'
