@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Union
 
 from vrgaze.tennis.models.abstraction import Visitable
-from vrgaze.tennis.services.writer import CSVWriter
+from vrgaze.tennis.services.export import CSVWriter
 
 
 @dataclass
@@ -73,7 +73,24 @@ class ExperimentalData(Visitable):
 		else:
 			self.conditions = [data]
 
-	def to_csv(self, filepath: str):
+	def to_csv(self, filepath: str) -> None:
+		"""Export gaze data to a CSV file.
+
+		Args:
+			filepath (str): File path to save the results
+
+		Examples:
+			>>> experts = load_condition("Experts", "example_data/tennis_data/experimental_condition")
+			>>> novices = load_condition("Novices", "example_data/tennis_data/experimental_condition")
+			>>>
+			>>> data = ExperimentalData([experts, novices])
+			>>> data.analyze(BallEvents())
+			>>> data.analyze(GazeEvents())
+			>>>
+			>>> data.to_csv("example_results.csv")
+		"""
+
+
 		data = []
 		for condition in self.conditions:
 			exporter = CSVWriter(condition.name)

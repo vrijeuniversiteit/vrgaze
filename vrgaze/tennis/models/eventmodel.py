@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 
-
 @dataclass
 class Event:
 	timestamp: float
@@ -27,8 +26,10 @@ class Saccade(Event):
 	angle_start: float
 	angle_end: float
 
+
 class PredictiveSaccade(Saccade):
 	pass
+
 
 class CorrectiveSaccade(Saccade):
 	pass

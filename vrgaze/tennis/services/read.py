@@ -40,9 +40,12 @@ class Reader:
 					end = ball_number_changes[i + 1] if i + 1 < len(ball_number_changes) else len(content)
 					frames = []
 					last_frame = 1
+					first_timestamp_raw = float(content[start].split(",")[4])
 
 					for line in content[start:end - last_frame]:
 						parts = line.split(",")
+
+						timestamp_seconds = (float(parts[4]) - first_timestamp_raw) / 1000
 
 						tobii_gazeray_origin_x = float(parts[50])
 						tobii_gazeray_origin_y = float(parts[51])
@@ -53,7 +56,7 @@ class Reader:
 
 						frames.append(
 							Frame(
-								timestamp=float(parts[4]),
+								timestamp=timestamp_seconds,
 								ball_position_x=float(parts[5]),
 								ball_position_y=float(parts[6]),
 								ball_position_z=float(parts[7]),

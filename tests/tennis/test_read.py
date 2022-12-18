@@ -44,6 +44,23 @@ class TestReadFiles(TestReader):
 		self.assertEqual(first_frame.gaze_direction_y, 0.05927261)
 		self.assertEqual(first_frame.gaze_direction_z, 0.9981007)
 
+	def test_should_convert_timestamps_to_seconds_starting_at_0(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+		first_frame = self.reader.participants[0].trials[0].frames[0]
+		self.assertEqual(first_frame.timestamp, 0.0)
+
+	def test_timestamps_for_each_trial_should_commence_at_0(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+		self.assertEqual(self.reader.participants[0].trials[0].frames[0].timestamp, 0.0)
+		self.assertEqual(self.reader.participants[0].trials[1].frames[0].timestamp, 0.0)
+
+	def test_timestamps_should_show_delta_seconds_between_frames(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+		self.assertAlmostEqual(self.reader.participants[0].trials[0].frames[1].timestamp, 0.011, delta=0.001)
+
 class TestValidator(TestCase):
 	def test_should_throw_error_if_header_is_different(self):
 		expected_header = 'participant_id,test_id,block_number,ball_number,timestamp,ball_position_x,ball_position_y,' \

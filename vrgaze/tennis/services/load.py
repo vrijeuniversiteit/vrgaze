@@ -13,11 +13,21 @@ def load_condition(name: str, folder_path: str) -> ConditionData:
 		ConditionData: Data from the experimental condition
 
 	Examples:
-		>>> from vrgaze.tennis.load import load_condition
+		# For a single condition:
+		>>> from vrgaze.tennis import load_condition, ExperimentalData
+		>>>
 		>>> condition = load_condition("Experts", "path/to/folder")
 		>>> print(condition)
 		>>> Name=Experts, Participants=10
+		>>>
+		>>> data = ExperimentalData(condition)
 
+
+
+		# For several conditions:
+		>>> experts = load_condition("Experts", "path/to/folder")
+		>>> novices = load_condition("Novices", "path/to/folder")
+		>>> data = ExperimentalData([experts, novices])
 	"""
 
 	reader = Reader()

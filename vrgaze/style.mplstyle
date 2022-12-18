@@ -3,8 +3,8 @@ axes.edgecolor: black
 axes.facecolor: white
 axes.labelcolor: black
 axes.grid: True
-axes.titlesize: 20
-axes.labelsize: 20
+axes.titlesize: 12
+axes.labelsize: 12
 figure.edgecolor: white
 figure.facecolor: white
 figure.autolayout: True
@@ -23,7 +23,7 @@ savefig.edgecolor: white
 savefig.facecolor: white
 text.color: black
 text.usetex: true
-xtick.labelsize : 20
-ytick.labelsize : 20
+xtick.labelsize : 12
+ytick.labelsize : 12
 xtick.color: black
 ytick.color: black
