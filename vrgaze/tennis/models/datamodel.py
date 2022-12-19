@@ -72,6 +72,10 @@ class ExperimentalData(Visitable):
 		for condition in self.conditions:
 			condition.analyze(visitor)
 
+	def export(self, visitor: "Visitor"):
+		for condition in self.conditions:
+			condition.analyze(visitor)
+
 	def __init__(self, data: Union[List[ConditionData], ConditionData]):
 		if isinstance(data, list):
 			self.conditions = data
@@ -82,6 +86,7 @@ class ExperimentalData(Visitable):
 		"""Export gaze data to a CSV file.
 
 		Args:
+			visitor (Visitor): A visitor that implements the visit method.
 			filepath (str): File path to save the results
 
 		Examples:
@@ -109,39 +114,12 @@ class ExperimentalData(Visitable):
 			>>> "Result Y": The y-coordinate of the ball's final position when hitting the ground
 			>>> "Result Z": The z-coordinate of the ball's final position when hitting the ground
 			>>> "Distance To Target": The distance between the ball's final position and the closest target [meters]
-
 		"""
 
-		data = []
+		visitor = CSVWriter()
 		for condition in self.conditions:
-			exporter = CSVWriter(condition.name)
-			condition.analyze(exporter)
-			data.extend(exporter.data)
-
-		with open(filepath, 'w', newline='') as csvfile:
-			writer = csv.writer(csvfile, delimiter=',')
-
-			# write header
-			writer.writerow(
-				[
-					"Condition",
-					"Participant",
-					"Ball Number",
-					"Block Number",
-					"Test",
-					"Timestamp",
-					"Saccade Angle Amplitude",
-					"Angle Ball-Gaze Start",
-					"Angle Ball-Gaze End",
-					"Result X",
-					"Result Y",
-					"Result Z",
-					"Distance To Target"
-				]
-			)
-
-			for row in data:
-				writer.writerow(row)
+			visitor.visit_with_context(condition, condition.name)
+		visitor.save(filepath)
 
 
 @dataclass

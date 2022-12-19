@@ -9,7 +9,7 @@ This package contains scripts to analyze data from VR experiments
 To install the package, run the following command in the terminal:
 
 ```bash
-pip install git+https://github.com/vrijeuniversiteit/vrgaze.git
+pip install --upgrade git+https://github.com/vrijeuniversiteit/vrgaze.git
 ```
 
 ## Documentation

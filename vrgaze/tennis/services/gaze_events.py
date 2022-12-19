@@ -8,6 +8,9 @@ from vrgaze.tennis.models.eventmodel import Event, CorrectiveSaccade, Predictive
 
 
 class GazeEvents(Visitor):
+	def visit_with_context(self, trial: Visitable, condition_name: str):
+		self.visit(trial)
+
 	def visit(self, trial: Visitable):
 		trial = trial
 		events = GazeEventCalculator(trial)
