@@ -12,6 +12,6 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install dependencies from setup.py
-      - run: pip install -e .[website]
+        run: pip install -e .[website]
       - name: Build website
-      - run: mkdocs gh-deploy --force
+        run: mkdocs gh-deploy --force
