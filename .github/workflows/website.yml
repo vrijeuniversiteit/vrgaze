@@ -11,6 +11,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install mkdocs-material
-      - run: pip install mkdocstrings[python]
+      - name: Install dependencies from setup.py
+      - run: pip install -e .[website]
+      - name: Build website
       - run: mkdocs gh-deploy --force
