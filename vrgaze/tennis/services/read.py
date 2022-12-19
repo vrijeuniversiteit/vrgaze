@@ -71,13 +71,25 @@ class Reader:
 								gaze_direction_z=tobii_gazeray_direction_z,
 							)
 						)
+
+
+					last_line = content[end - last_frame].split(",")
+					result_location_x = float(last_line[14])
+					result_location_y = float(last_line[15])
+					result_location_z = float(last_line[16])
+					distance_to_closest_target = float(last_line[18])
+
 					trials.append(
 						Trial(
 							participant_id=int(parts[0]),
 							test_id=int(parts[1]),
 							block_number=int(parts[2]),
 							ball_number=int(parts[3]),
-							frames=frames
+							result_location_x=result_location_x,
+							result_location_y=result_location_y,
+							result_location_z=result_location_z,
+							distance_to_closest_target=distance_to_closest_target,
+							frames=frames,
 						)
 					)
 

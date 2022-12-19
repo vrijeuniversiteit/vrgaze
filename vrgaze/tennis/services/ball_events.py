@@ -7,8 +7,8 @@ from vrgaze.tennis.models.eventmodel import Event, BallCrossesNetAfterServe, Bal
 
 
 class BallEvents(Visitor):
-	def visit(self, visitable: Visitable):
-		trial = visitable
+	def visit(self, trial: Visitable):
+		trial = trial
 		events = BallEventsCalculator(trial)
 		events.detect_ball_crosses_net()
 		events.identify_hit_with_racket()

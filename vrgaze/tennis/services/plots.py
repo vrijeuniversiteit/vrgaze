@@ -90,7 +90,6 @@ def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> p
 					# filled point green at end
 					ax.scatter3D(end_x, end_y, end_z, color='green', marker='o', s=20, alpha=1)
 
-	ax.set_title("Ball Trajectories")
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)
 
@@ -178,12 +177,10 @@ def plot_gaze_ball_angle(data):
 		frame.gaze_origin_z
 	) for frame in frames]
 
-	# plot with aspect ratio 5:2
 	fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(5,5), sharex=True)
 
 	timestamps = [frame.timestamp for frame in frames]
 	bounce_event = next((event for event in trial.ball_events if isinstance(event, FirstBounceEvent)), None)
-
 
 	# lambda time filter
 	seconds_to_show_after_bounce = 0
@@ -208,42 +205,10 @@ def plot_gaze_ball_angle(data):
 
 	ax1.set_ylim(y_limits)
 	ax1.invert_yaxis()
-
 	ax1.set_ylabel("Angle [deg]")
-	# ax1.legend(
-	# 	[
-	# 		"Ball-Gaze angle. Positive values indicate gaze is above the ball",
-	# 		"Ball Bounce",
-	# 		"Predictive Saccade"
-	# 	]
-	# )
-
-	# legend but outside of plot
-	# ax1.legend(
-	# 	[
-	# 		"Ball-Gaze angle. Positive values indicate gaze is above the ball",
-	# 		"Ball Bounce",
-	# 		"Predictive Saccade"
-	# 	],
-	# 	loc="upper center",
-	# 	bbox_to_anchor=(0.5, -0.1),
-	# 	fancybox=True,
-	# 	shadow=True,
-	# )
-
-	# # add a suptitle and a rich text description
-	# fig.suptitle("Ball-Gaze Angle", fontsize=16)
-	# fig.text(
-	# 	"Positive values indicate gaze is above the ball",
-	# 	ha="center",
-	# 	va="center",
-	# 	fontsize=12,
-	# 	y=0.95,
-	# 	s=0.95
-	# )
 
 
-	ax2.set_title("Ball-World Angle")
+	ax2.set_title("Gaze-World Angle")
 	gaze_world_y = [frame.gaze_direction_y for frame in frames]
 	gaze_world_z = [frame.gaze_direction_z for frame in frames]
 	gaze_world_angle = [Angles.calculate_gaze_world_angle(gaze_world_y[i], gaze_world_z[i]) for i in
@@ -252,8 +217,6 @@ def plot_gaze_ball_angle(data):
 	ax2.plot(filtered_timestamps, gaze_world_angle_at_timesteps)
 	ax2.set_ylabel("Angle [deg]")
 
-
-	# plot ball trajectory y in ax2
 	ax3.set_title("Ball Flight Curve")
 	ball_position_y_at_timesteps = [frame.ball_position_y for frame in frames if time_filter(frame.timestamp)]
 	ax3.plot(filtered_timestamps, ball_position_y_at_timesteps)

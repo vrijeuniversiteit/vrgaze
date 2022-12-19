@@ -27,7 +27,6 @@ class TestReadFiles(TestReader):
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials[0].frames), 232)
 
-
 	def test_should_find_two_participants(self):
 		self.reader.discover_files("example_data/tennis_data/experimental_condition")
 		self.reader.read_files()
@@ -43,6 +42,22 @@ class TestReadFiles(TestReader):
 		self.assertEqual(first_frame.gaze_direction_x, -0.01645234)
 		self.assertEqual(first_frame.gaze_direction_y, 0.05927261)
 		self.assertEqual(first_frame.gaze_direction_z, 0.9981007)
+
+	def test_should_read_results_location(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+		result_x = self.reader.participants[0].trials[0].result_location_x
+		result_y = self.reader.participants[0].trials[0].result_location_y
+		result_z = self.reader.participants[0].trials[0].result_location_z
+		self.assertEqual(result_x, -2.881121)
+		self.assertEqual(result_y, 0.03343761)
+		self.assertEqual(result_z, 12.05697)
+
+	def test_should_read_result_distance_to_closest_target(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+		result = self.reader.participants[0].trials[0].distance_to_closest_target
+		self.assertEqual(result, 3.108663)
 
 	def test_should_convert_timestamps_to_seconds_starting_at_0(self):
 		self.reader.discover_files("example_data/tennis_data/single_example_file")
@@ -60,6 +75,7 @@ class TestReadFiles(TestReader):
 		self.reader.discover_files("example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertAlmostEqual(self.reader.participants[0].trials[0].frames[1].timestamp, 0.011, delta=0.001)
+
 
 class TestValidator(TestCase):
 	def test_should_throw_error_if_header_is_different(self):

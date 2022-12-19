@@ -9,5 +9,5 @@ class Visitable(ABC):
 
 class Visitor(ABC):
 	@abstractmethod
-	def visit(self, visitable: Visitable):
+	def visit(self, trial: Visitable):
 		...
