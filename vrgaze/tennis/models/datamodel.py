@@ -86,7 +86,6 @@ class ExperimentalData(Visitable):
 		"""Export gaze data to a CSV file.
 
 		Args:
-			visitor (Visitor): A visitor that implements the visit method.
 			filepath (str): File path to save the results
 
 		Examples:

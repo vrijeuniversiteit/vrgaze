@@ -9,6 +9,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Setup Python: setup_python.md
   - Tennis: tennis.md # All classes with docstrings """ are discovered
 
 plugins:
