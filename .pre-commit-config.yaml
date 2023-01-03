@@ -11,9 +11,9 @@ repos:
     pass_filenames: false # Otherwise the discovered files will be passed as arguments
   - id: run-script
     name: Run Tennis Script without Error
-    entry:  venv/Scripts/python.exe test_tennis.py
+    entry:  venv/Scripts/python.exe tennis_validation.py
     language: python
   - id: run-version
     name: Version was updated since last commit (see setup.py)
-    entry: venv/Scripts/python.exe test_version.py
+    entry: venv/Scripts/python.exe version_validation.py
     language: python
