@@ -1,5 +1,6 @@
 site_name: VR Gaze
 site_url: https://github.com/vrijeuniversiteit/vrgaze
+repo_url: https://github.com/vrijeuniversiteit/vrgaze
 theme:
   name: material
   logo: assets/logo.png
@@ -11,6 +12,8 @@ nav:
   - Home: index.md
   - Setup Python: setup_python.md
   - Tennis: tennis.md # All classes with docstrings """ are discovered
+  - Contribute: contribute.md
+  - Having Issues?: issues.md
 
 plugins:
   - search
@@ -26,3 +29,4 @@ plugins:
 markdown_extensions:
   - pymdownx.snippets:
       base_path: docs
+      check_paths: true

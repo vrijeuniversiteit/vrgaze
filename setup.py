@@ -1,9 +1,8 @@
-import vrgaze
 from setuptools import setup, find_packages
 
 setup(
 	name='vrgaze',
-	version=vrgaze.__version__,
+	version="1.0.0",
 	url='https://github.com/vrijeuniversiteit/vrgaze.git',
 	author='Daniel Müller',
 	author_email='d.muller at vu.nl',

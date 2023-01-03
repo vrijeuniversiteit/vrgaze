@@ -4,9 +4,16 @@
 repos:
 - repo: local
   hooks:
-    - id: increment-version
-      name: Increment Version
-      entry: python increment_version.py
-      language: python
-      files: ^setup\.py$
-      always_run: true
+  - id: run-tests
+    name: Run Tests without Error
+    entry: python -m unittest discover -s tests
+    language: system
+    pass_filenames: false # Otherwise the discovered files will be passed as arguments
+  - id: run-script
+    name: Run Tennis Script without Error
+    entry:  venv/Scripts/python.exe test_tennis.py
+    language: python
+  - id: run-version
+    name: Version was updated since last commit (see setup.py)
+    entry: venv/Scripts/python.exe test_version.py
+    language: python
