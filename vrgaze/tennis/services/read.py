@@ -69,6 +69,7 @@ class Reader:
 								gaze_direction_x=tobii_gazeray_direction_x,
 								gaze_direction_y=tobii_gazeray_direction_y,
 								gaze_direction_z=tobii_gazeray_direction_z,
+								gaze_is_valid=parts[49] == "TRUE",
 							)
 						)
 

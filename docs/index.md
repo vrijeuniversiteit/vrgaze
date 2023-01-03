@@ -9,6 +9,7 @@ pip install --upgrade git+https://github.com/vrijeuniversiteit/vrgaze.git
 ```
 
 ## Analyzing tennis data
+
 ```python
 from vrgaze.tennis import ExperimentalData, BallEvents, GazeEvents, load_condition
 from vrgaze.tennis import plot_3d, plot_birdview, plot_side, plot_gaze_ball_angle
@@ -18,8 +19,8 @@ novices = load_condition("Novices", "example_data/tennis_data/experimental_condi
 
 data = ExperimentalData([experts, novices])
 
-data.analyze(BallEvents())
-data.analyze(GazeEvents())
+data.process(BallEvents())
+data.process(GazeEvents())
 
 plot = plot_gaze_ball_angle(data)
 plot.savefig("plot_gaze_ball_angle.png")

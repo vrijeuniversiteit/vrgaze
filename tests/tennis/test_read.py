@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from vrgaze.tennis.services.read import Reader, Validator
 
 
@@ -26,6 +27,72 @@ class TestReadFiles(TestReader):
 		self.reader.discover_files("example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials[0].frames), 232)
+
+	def test_should_read_ball_position_x_for_both_trials(self):
+		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.read_files()
+
+		first_trial_first_position = 0.00626
+		first_trial_last_position = -1.627846
+		second_trial_first_position = 0.0054250
+		second_trial_last_position = -0.193335
+
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[0].frames[0].ball_position_x,
+			first_trial_first_position,
+			delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[0].frames[-1].ball_position_x,
+			first_trial_last_position,
+			delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[1].frames[0].ball_position_x,
+			second_trial_first_position,
+			delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[1].frames[-1].ball_position_x,
+			second_trial_last_position,
+			delta=0.000001
+			)
+
+	def test_should_read_column_tobii_gazeray_is_valid(self):
+		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.read_files()
+		first_trial_first_frame = self.reader.participants[0].trials[0].frames[0].gaze_is_valid
+		first_occurrence_false = self.reader.participants[0].trials[0].frames[171].gaze_is_valid
+
+		self.assertTrue(first_trial_first_frame)
+		self.assertFalse(first_occurrence_false)
+
+	def test_should_read_tobii_gazeray_origin_x_for_both_trials(self):
+		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.read_files()
+
+		first_trial_first_position = 0.1023313
+		first_trial_last_position = 0.1708458
+		second_trial_first_position = 0.127413
+		second_trial_last_position = 0
+
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[0].frames[0].gaze_origin_x,
+			first_trial_first_position,
+			delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[0].frames[-1].gaze_origin_x,
+			first_trial_last_position, delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[1].frames[0].gaze_origin_x,
+			second_trial_first_position, delta=0.000001
+			)
+		self.assertAlmostEqual(
+			self.reader.participants[0].trials[1].frames[-1].gaze_origin_x,
+			second_trial_last_position, delta=0.000001
+			)
 
 	def test_should_find_two_participants(self):
 		self.reader.discover_files("example_data/tennis_data/experimental_condition")

@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from vrgaze.tennis.utils import Angles, Integration, Saccades
-from vrgaze.tennis.models.datamodel import Trial
 from vrgaze.tennis.models.abstraction import Visitable, Visitor
-from vrgaze.tennis.models.eventmodel import Event, CorrectiveSaccade, PredictiveSaccade, FirstBounceEvent
+from vrgaze.tennis.models.datamodel import Trial
+from vrgaze.tennis.models.eventmodel import Event, FirstBounceEvent, CorrectiveSaccade, PredictiveSaccade
+from vrgaze.tennis.utils import Angles, Integration, Saccades
 
 
 class GazeEvents(Visitor):

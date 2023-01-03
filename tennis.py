@@ -1,4 +1,5 @@
-from vrgaze.tennis import ExperimentalData, BallEvents, GazeEvents, load_condition
+from vrgaze.tennis import load_condition
+from vrgaze.tennis.models.experiment import ExperimentalData
 from vrgaze.tennis import plot_3d, plot_birdview, plot_side, plot_gaze_ball_angle
 
 experts = load_condition("Experts", "example_data/tennis_data/experimental_condition")
@@ -6,8 +7,7 @@ novices = load_condition("Novices", "example_data/tennis_data/experimental_condi
 
 data = ExperimentalData([experts, novices])
 
-data.analyze(BallEvents())
-data.analyze(GazeEvents())
+data.analyze_trials()
 
 plot = plot_gaze_ball_angle(data)
 plot.savefig("plot_gaze_ball_angle.png")

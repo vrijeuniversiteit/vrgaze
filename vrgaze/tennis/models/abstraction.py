@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class Visitable(ABC):
 	@abstractmethod
-	def analyze(self, visitor: "Visitor"):
+	def process(self, visitor: "Visitor"):
 		...
 
 

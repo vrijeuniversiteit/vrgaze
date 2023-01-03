@@ -40,7 +40,7 @@ class CSVWriter(Visitor):
 
 	def visit_with_context(self, trial: Visitable, condition_name: str):
 		self.condition = condition_name
-		trial.analyze(self)
+		trial.process(self)
 
 	def save(self, filepath):
 		with open(filepath, 'w', newline='') as csvfile:

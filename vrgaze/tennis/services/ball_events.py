@@ -1,7 +1,6 @@
 from dataclasses import field, dataclass
 from typing import List
 
-from vrgaze.tennis.models.datamodel import Trial
 from vrgaze.tennis.models.abstraction import Visitable, Visitor
 from vrgaze.tennis.models.eventmodel import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent
 
@@ -20,7 +19,7 @@ class BallEvents(Visitor):
 
 @dataclass
 class BallEventsCalculator:
-	trial: Trial
+	trial: "Trial"
 	events: List[Event] = field(default_factory=list)
 
 	def contains(self, event_type: Event):

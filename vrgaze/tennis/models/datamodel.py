@@ -1,9 +1,7 @@
-import csv
 from dataclasses import dataclass, field
-from typing import List, Union
+from typing import List
 
 from vrgaze.tennis.models.abstraction import Visitable
-from vrgaze.tennis.services.export import CSVWriter
 
 
 @dataclass
@@ -21,6 +19,7 @@ class Frame:
 	gaze_direction_x: float
 	gaze_direction_y: float
 	gaze_direction_z: float
+	gaze_is_valid: bool
 
 
 @dataclass
@@ -37,7 +36,7 @@ class Trial(Visitable):
 	ball_events: List["Event"] = field(default_factory=list)
 	gaze_events: List["Event"] = field(default_factory=list)
 
-	def analyze(self, visitor: "Visitor"):
+	def process(self, visitor: "Visitor"):
 		visitor.visit(self)
 
 
@@ -46,9 +45,9 @@ class Participant(Visitable):
 	participant_id: int
 	trials: List[Trial]
 
-	def analyze(self, visitor: "Visitor"):
+	def process(self, visitor: "Visitor"):
 		for trial in self.trials:
-			trial.analyze(visitor)
+			trial.process(visitor)
 
 
 @dataclass
@@ -56,69 +55,12 @@ class ConditionData(Visitable):
 	name: str
 	participants: List[Participant]
 
-	def analyze(self, visitor: "Visitor"):
+	def process(self, visitor: "Visitor"):
 		for participant in self.participants:
-			participant.analyze(visitor)
+			participant.process(visitor)
 
 	def __repr__(self):
 		return f"Name={self.name}, Participants={len(self.participants)})"
-
-
-@dataclass
-class ExperimentalData(Visitable):
-	conditions: List[ConditionData]
-
-	def analyze(self, visitor: "Visitor"):
-		for condition in self.conditions:
-			condition.analyze(visitor)
-
-	def export(self, visitor: "Visitor"):
-		for condition in self.conditions:
-			condition.analyze(visitor)
-
-	def __init__(self, data: Union[List[ConditionData], ConditionData]):
-		if isinstance(data, list):
-			self.conditions = data
-		else:
-			self.conditions = [data]
-
-	def to_csv(self, filepath: str) -> None:
-		"""Export gaze data to a CSV file.
-
-		Args:
-			filepath (str): File path to save the results
-
-		Examples:
-			# Exporting data
-			>>> experts = load_condition("Experts", "example_data/tennis_data/experimental_condition")
-			>>> novices = load_condition("Novices", "example_data/tennis_data/experimental_condition")
-			>>>
-			>>> data = ExperimentalData([experts, novices])
-			>>> data.analyze(BallEvents())
-			>>> data.analyze(GazeEvents())
-			>>>
-			>>> data.to_csv("example_results.csv")
-
-			# Understanding the data
-			>>> "Condition": The name of the condition given when the data is loaded
-			>>> "Participant": The participant ID
-			>>> "Ball Number": The current ball number
-			>>> "Block Number": The current block number
-			>>> "Test": The current test number
-			>>> "Timestamp": The timestamp of the predictive saccade
-			>>> "Saccade Angle Amplitude": The angle amplitude of the predictive saccade [degrees]
-			>>> "Angle Ball-Gaze Start": The angle between the ball and the gaze direction at the start of the predictive saccade [degrees]
-			>>> "Angle Ball-Gaze End": The angle between the ball and the gaze direction at the end of the predictive saccade [degrees]
-			>>> "Result X": The x-coordinate of the ball's final position when hitting the ground
-			>>> "Result Y": The y-coordinate of the ball's final position when hitting the ground
-			>>> "Result Z": The z-coordinate of the ball's final position when hitting the ground
-			>>> "Distance To Target": The distance between the ball's final position and the closest target [meters]
-		"""
-
-		visitor = CSVWriter()
-		for condition in self.conditions:
-			visitor.visit_with_context(condition, condition.name)
-		visitor.save(filepath)
 
 
 @dataclass
