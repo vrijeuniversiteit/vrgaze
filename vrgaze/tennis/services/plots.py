@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 
 from vrgaze.tennis.models.datamodel import Trajectory
-from vrgaze.tennis.models.experiment import ExperimentalData
+from vrgaze.tennis import ExperimentalData
 from vrgaze.tennis.models.eventmodel import PredictiveSaccade, FirstBounceEvent
 from vrgaze.tennis.utils import Angles
 

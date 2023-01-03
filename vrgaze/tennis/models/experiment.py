@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union
 
-from vrgaze.tennis import GazeEvents, BallEvents
+from vrgaze.tennis import BallEvents, GazeEvents
 from vrgaze.tennis.models.abstraction import Visitable
 from vrgaze.tennis.models.datamodel import ConditionData
 from vrgaze.tennis.services.export import CSVWriter
@@ -23,12 +23,11 @@ class ExperimentalData(Visitable):
 			condition.process(visitor)
 
 	def analyze_trials(self):
-		# TODO: Add to website documentation
 		visitors = [Preprocessor(), BallEvents(), GazeEvents()]
 
 		for visitor in visitors:
 			for condition in self.conditions:
-				visitor.visit_with_context(condition, condition.name)
+				condition.process(visitor)
 
 	def to_csv(self, filepath: str) -> None:
 		"""Export gaze data to a CSV file.

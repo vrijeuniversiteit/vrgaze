@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 from vrgaze.tennis.models.datamodel import ConditionData
-from vrgaze.tennis.models.experiment import ExperimentalData
+from vrgaze.tennis import ExperimentalData
 
 
 class TestExperimentalData(TestCase):

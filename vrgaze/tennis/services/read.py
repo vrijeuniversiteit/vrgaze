@@ -1,8 +1,8 @@
 import glob
 import os
-from datetime import datetime
 
 from vrgaze.tennis.models.datamodel import Trial, Frame, Participant
+
 
 class Reader:
 	def __init__(self):
