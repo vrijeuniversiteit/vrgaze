@@ -18,7 +18,6 @@ def increment_version():
 	# text = pattern.sub(new_version, text)
 	# with open(path, "w") as f:
 	# 	f.write(text)
-	#
 	# print(f"Bumped version from {version} to {new_version}")
 
 
