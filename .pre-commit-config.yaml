@@ -1,0 +1,11 @@
+# Run sudo pre-commit install --overwrite
+# Needs pip install pre-commit
+
+repos:
+- repo: local
+  hooks:
+    - id: increment-version
+      name: Increment Version
+      entry: python increment_version.py
+      language: python
+      files: ^setup\.py$

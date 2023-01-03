@@ -41,9 +41,7 @@ class ExperimentalData(Visitable):
 			>>> novices = load_condition("Novices", "example_data/tennis_data/experimental_condition")
 			>>>
 			>>> data = ExperimentalData([experts, novices])
-			>>> data.process(BallEvents())
-			>>> data.process(GazeEvents())
-			>>>
+			>>> data.analyze_trials()
 			>>> data.to_csv("example_results.csv")
 
 			# Understanding the data
