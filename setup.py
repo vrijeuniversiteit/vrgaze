@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='vrgaze',
-	version="1.0.2",
+	version="1.0.3",
 	url='https://github.com/vrijeuniversiteit/vrgaze.git',
 	author='Daniel Müller',
 	author_email='d.muller at vu.nl',
@@ -10,6 +10,7 @@ setup(
 	packages=find_packages(),
 	package_data={
 		'vrgaze': ['style.mplstyle'],
+		'vrgaze': ['example_data/*'],
 	},
 	install_requires=['matplotlib >= 3.6.2'],
 	extras_require={
