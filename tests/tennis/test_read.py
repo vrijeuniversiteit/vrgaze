@@ -10,7 +10,7 @@ class TestReader(TestCase):
 
 class TestDiscoverFiles(TestReader):
 	def test_should_discover_example_file(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.assertEqual(self.reader.number_files, 1)
 
 	def test_should_raise_error_if_path_not_exists(self):
@@ -19,17 +19,17 @@ class TestDiscoverFiles(TestReader):
 
 class TestReadFiles(TestReader):
 	def test_should_find_two_trials(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials), 2)
 
 	def test_should_have_232_frames_for_first_trial(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants[0].trials[0].frames), 232)
 
 	def test_should_read_ball_position_x_for_both_trials(self):
-		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
 		self.reader.read_files()
 
 		first_trial_first_position = 0.00626
@@ -59,7 +59,7 @@ class TestReadFiles(TestReader):
 			)
 
 	def test_should_read_column_tobii_gazeray_is_valid(self):
-		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
 		self.reader.read_files()
 		first_trial_first_frame = self.reader.participants[0].trials[0].frames[0].gaze_is_valid
 		first_occurrence_false = self.reader.participants[0].trials[0].frames[171].gaze_is_valid
@@ -68,7 +68,7 @@ class TestReadFiles(TestReader):
 		self.assertFalse(first_occurrence_false)
 
 	def test_should_read_tobii_gazeray_origin_x_for_both_trials(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 
 		first_trial_first_position = 0.1023313
@@ -95,12 +95,12 @@ class TestReadFiles(TestReader):
 			)
 
 	def test_should_find_two_participants(self):
-		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants), 2)
 
 	def test_should_read_tobii_gazeorigin_and_direction(self):
-		self.reader.discover_files("example_data/tennis_data/experimental_condition")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
 		self.reader.read_files()
 		first_frame = self.reader.participants[0].trials[0].frames[0]
 		self.assertEqual(first_frame.gaze_origin_x, 0.1023313)
@@ -111,7 +111,7 @@ class TestReadFiles(TestReader):
 		self.assertEqual(first_frame.gaze_direction_z, 0.9981007)
 
 	def test_should_read_results_location(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		result_x = self.reader.participants[0].trials[0].result_location_x
 		result_y = self.reader.participants[0].trials[0].result_location_y
@@ -121,25 +121,25 @@ class TestReadFiles(TestReader):
 		self.assertEqual(result_z, 12.05697)
 
 	def test_should_read_result_distance_to_closest_target(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		result = self.reader.participants[0].trials[0].distance_to_closest_target
 		self.assertEqual(result, 3.108663)
 
 	def test_should_convert_timestamps_to_seconds_starting_at_0(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		first_frame = self.reader.participants[0].trials[0].frames[0]
 		self.assertEqual(first_frame.timestamp, 0.0)
 
 	def test_timestamps_for_each_trial_should_commence_at_0(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertEqual(self.reader.participants[0].trials[0].frames[0].timestamp, 0.0)
 		self.assertEqual(self.reader.participants[0].trials[1].frames[0].timestamp, 0.0)
 
 	def test_timestamps_should_show_delta_seconds_between_frames(self):
-		self.reader.discover_files("example_data/tennis_data/single_example_file")
+		self.reader.discover_files("vrgaze/example_data/tennis_data/single_example_file")
 		self.reader.read_files()
 		self.assertAlmostEqual(self.reader.participants[0].trials[0].frames[1].timestamp, 0.011, delta=0.001)
 
