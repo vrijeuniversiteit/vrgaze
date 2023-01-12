@@ -1,8 +1,10 @@
-from vrgaze.tennis import load_condition, ExperimentalData
+from vrgaze.tennis import load_condition, ExperimentalData, path_to_folder_with_csv_data
 from vrgaze.tennis import plot_3d, plot_birdview, plot_side, plot_gaze_ball_angle
 
-experts = load_condition("Experts", "vrgaze/example_data/tennis_data/experimental_condition")
-novices = load_condition("Novices", "vrgaze/example_data/tennis_data/experimental_condition")
+# Place all experimental data in a folder called 'data' in the root of your project.
+# Replace the second parameter below with the location of your data folder (e.g., 'data/experts/')
+experts = load_condition("Experts", path_to_folder_with_csv_data())
+novices = load_condition("Novices", path_to_folder_with_csv_data())
 
 data = ExperimentalData([experts, novices])
 
