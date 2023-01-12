@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='vrgaze',
-	version="1.0.4",
+	version="1.0.5",
 	url='https://github.com/vrijeuniversiteit/vrgaze.git',
 	author='Daniel Müller',
 	author_email='d.muller at vu.nl',
@@ -10,7 +10,6 @@ setup(
 	packages=find_packages(),
 	package_data={
 		'vrgaze': [
-			'style.mplstyle',
 			'example_data/tennis_data/*',
 			'example_data/tennis_data/experimental_condition/*',
 			'example_data/tennis_data/single_example_file/*'

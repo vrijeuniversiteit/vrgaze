@@ -1,11 +1,43 @@
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, cycler
 
 from vrgaze.tennis.models.datamodel import Trajectory
 from vrgaze.tennis import ExperimentalData
 from vrgaze.tennis.models.eventmodel import PredictiveSaccade, FirstBounceEvent
 from vrgaze.tennis.utils import Angles
 
-plt.style.use(['vrgaze/style.mplstyle'])
+plt.rcParams.update(
+	{
+		'axes.prop_cycle': cycler(color=["0.00", "0.40", "0.60", "0.70"]),
+        'axes.edgecolor': 'black',
+        'axes.facecolor': 'white',
+        'axes.labelcolor': 'black',
+        'axes.grid': True,
+        'axes.titlesize': 12,
+        'axes.labelsize': 12,
+        'figure.edgecolor': 'white',
+        'figure.facecolor': 'white',
+        'figure.autolayout': True,
+        'figure.dpi': 100,
+        'font.family': 'serif',
+        'font.serif': 'Computer Modern',
+        'grid.color': 'black',
+        'grid.linestyle': '--',
+        'image.cmap': 'gray',
+        'lines.color': 'black',
+        'lines.linewidth': 2.0,
+        'mathtext.fontset': 'cm',
+        'patch.edgecolor': 'black',
+        'patch.facecolor': 'gray',
+        'savefig.edgecolor': 'white',
+        'savefig.facecolor': 'white',
+        'text.color': 'black',
+        'text.usetex': True,
+        'xtick.labelsize': 12,
+        'ytick.labelsize': 12,
+        'xtick.color': 'black',
+        'ytick.color': 'black'
+	}
+)
 
 
 def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> plt:
