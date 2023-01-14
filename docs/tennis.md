@@ -7,10 +7,7 @@ The folder for each condition should only have the csv files from that condition
 In case only a single condition is examined, place all `.csv` files in a single folder.
 
 ## Loading data
-::: vrgaze.tennis.services.load
+::: vrgaze.tennis.services.io
 
 ## Plotting data
 ::: vrgaze.tennis.services.plots
-
-## Exporting data
-::: vrgaze.tennis.models
