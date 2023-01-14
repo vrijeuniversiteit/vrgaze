@@ -1,6 +1,6 @@
 import unittest
 
-from vrgaze.tennis.utils import Saccades
+from vrgaze.tennis.services.processing.saccades import Saccades
 
 
 class TestNumerics(unittest.TestCase):

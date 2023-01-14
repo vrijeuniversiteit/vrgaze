@@ -1,6 +1,6 @@
 import unittest
 
-from vrgaze.tennis.utils import Angles
+from vrgaze.tennis.services.processing.angles import Angles
 
 
 class BallGazeAngleParams:

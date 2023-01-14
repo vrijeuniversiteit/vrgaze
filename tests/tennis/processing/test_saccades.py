@@ -1,6 +1,7 @@
 import unittest
 
-from vrgaze.tennis.utils import Integration, Saccades
+from vrgaze.tennis.services.processing.saccades import Saccades
+from vrgaze.tennis.services.processing.integration import Integration
 
 
 class TestIntegration(unittest.TestCase):

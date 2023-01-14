@@ -1,6 +1,6 @@
 import unittest
 
-from tests.tennis.trial_builder import TrialBuilder
+from tests.tennis.builders.trial_builder import TrialBuilder
 from vrgaze.tennis.models.eventmodel import BallHitWithRacket, FirstBounceEvent, BallCrossesNetAfterServe
 from vrgaze.tennis.services.processing.ball_events import BallEventsCalculator
 

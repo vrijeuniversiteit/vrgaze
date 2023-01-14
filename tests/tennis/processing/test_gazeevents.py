@@ -1,6 +1,6 @@
 import unittest
 
-from tests.tennis.trial_builder import TrialBuilder
+from tests.tennis.builders.trial_builder import TrialBuilder
 
 
 class TestGazeEvents(unittest.TestCase):

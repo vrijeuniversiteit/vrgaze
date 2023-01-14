@@ -4,7 +4,9 @@ from typing import List
 from vrgaze.tennis.models.abstraction import Visitable, Visitor
 from vrgaze.tennis.models.datamodel import Trial
 from vrgaze.tennis.models.eventmodel import Event, FirstBounceEvent, CorrectiveSaccade, PredictiveSaccade
-from vrgaze.tennis.utils import Angles, Integration, Saccades
+from vrgaze.tennis.services.processing.saccades import Saccades
+from vrgaze.tennis.services.processing.integration import Integration
+from vrgaze.tennis.services.processing.angles import Angles
 
 
 class GazeEvents(Visitor):
