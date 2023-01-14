@@ -15,6 +15,7 @@ class TrialExportData:
 	BlockNumber: str
 	TestID: str
 	IsValid: bool
+	FirstBounceTimestamp: float
 	FirstBouncePositionX: float
 	FirstBouncePositionY: float
 	FirstBouncePositionZ: float
@@ -59,6 +60,7 @@ class CSVWriter(Visitor):
 				BlockNumber=block_number,
 				TestID=test_id,
 				IsValid=False,
+				FirstBounceTimestamp=f"{first_bounce.timestamp:.3f}",
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
@@ -80,6 +82,7 @@ class CSVWriter(Visitor):
 				BlockNumber=block_number,
 				TestID=test_id,
 				IsValid=is_trial_valid,
+				FirstBounceTimestamp=f"{first_bounce.timestamp:.3f}",
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
