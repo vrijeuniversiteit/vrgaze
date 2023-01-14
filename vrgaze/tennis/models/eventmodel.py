@@ -15,6 +15,7 @@ class BallHitWithRacket(Event):
 	pass
 
 
+@dataclass
 class FirstBounceEvent(Event):
 	pass
 

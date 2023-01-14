@@ -15,6 +15,9 @@ class TrialExportData:
 	BlockNumber: str
 	TestID: str
 	IsValid: bool
+	FirstBouncePositionX: float
+	FirstBouncePositionY: float
+	FirstBouncePositionZ: float
 	SaccadeTimestamp: float
 	SaccadeAngleAmplitude: float
 	AngleBallToGazeAtSaccadeStart: float
@@ -38,53 +41,56 @@ class CSVWriter(Visitor):
 		predictive_saccades = [event for event in trial.gaze_events if isinstance(event, PredictiveSaccade)]
 		condition = self.condition
 
-		# TODO Export the three below:
-		first_bounce_timestamp = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)][
-			0].timestamp
-		second_bounce_timestamp = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)][
-			0].timestamp
+		first_bounce = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)][0]
+		second_bounce = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)][0]
 
 		is_trial_valid = True
 		hit_front_wall = [event for event in trial.ball_events if isinstance(event, BallHitFrontWall)]
 		if len(hit_front_wall) > 0:
 			hit_front_wall_timestamp = hit_front_wall[0].timestamp
-			if second_bounce_timestamp > hit_front_wall_timestamp:
+			if second_bounce.timestamp > hit_front_wall_timestamp:
 				is_trial_valid = False
 
 		if len(predictive_saccades) == 0:
 			trial_export_data = TrialExportData(
-				condition,
-				participant,
-				ball_number,
-				block_number,
-				test_id,
-				False,
-				None,
-				None,
-				None,
-				None,
-				None,
-				None,
-				None,
-				None,
+				Condition=condition,
+				Participant=participant,
+				BallNumber=ball_number,
+				BlockNumber=block_number,
+				TestID=test_id,
+				IsValid=False,
+				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
+				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
+				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
+				SaccadeTimestamp=None,
+				SaccadeAngleAmplitude=None,
+				AngleBallToGazeAtSaccadeStart=None,
+				AngleBallToGazeAtSaccadeEnd=None,
+				BallLandingPositionX=None,
+				BallLandingPositionY=None,
+				BallLandingPositionZ=None,
+				BallDistanceToTarget=None,
 			)
 		else:
 			saccade = predictive_saccades[-1]
 			trial_export_data = TrialExportData(
-				condition,
-				participant,
-				ball_number,
-				block_number,
-				test_id,
-				is_trial_valid,
-				f"{saccade.timestamp:.3f}",
-				f"{saccade.angle_amplitude:.3f}",
-				f"{saccade.angle_start:.3f}",
-				f"{saccade.angle_end:.3f}",
-				f"{trial.result_location_x:.3f}",
-				f"{trial.result_location_y:.3f}",
-				f"{trial.result_location_z:.3f}",
-				f"{trial.distance_to_closest_target:.3f}"
+				Condition=condition,
+				Participant=participant,
+				BallNumber=ball_number,
+				BlockNumber=block_number,
+				TestID=test_id,
+				IsValid=is_trial_valid,
+				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
+				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
+				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
+				SaccadeTimestamp=f"{saccade.timestamp:.3f}",
+				SaccadeAngleAmplitude=f"{saccade.angle_amplitude:.3f}",
+				AngleBallToGazeAtSaccadeStart=f"{saccade.angle_start:.3f}",
+				AngleBallToGazeAtSaccadeEnd=f"{saccade.angle_end:.3f}",
+				BallLandingPositionX=f"{trial.result_location_x:.3f}",
+				BallLandingPositionY=f"{trial.result_location_y:.3f}",
+				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
+				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}"
 			)
 
 		self.data.append(trial_export_data)
