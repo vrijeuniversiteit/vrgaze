@@ -1,5 +1,5 @@
 from vrgaze.tennis.models.datamodel import ConditionData
-from vrgaze.tennis.services.read import Reader
+from vrgaze.tennis.services.io.read import Reader
 
 
 def load_condition(name: str, folder_path: str) -> ConditionData:

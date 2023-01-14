@@ -8,34 +8,34 @@ from vrgaze.tennis.utils import Angles
 plt.rcParams.update(
 	{
 		'axes.prop_cycle': cycler(color=["0.00", "0.40", "0.60", "0.70"]),
-        'axes.edgecolor': 'black',
-        'axes.facecolor': 'white',
-        'axes.labelcolor': 'black',
-        'axes.grid': True,
-        'axes.titlesize': 12,
-        'axes.labelsize': 12,
-        'figure.edgecolor': 'white',
-        'figure.facecolor': 'white',
-        'figure.autolayout': True,
-        'figure.dpi': 100,
-        'font.family': 'serif',
-        'font.serif': 'Computer Modern',
-        'grid.color': 'black',
-        'grid.linestyle': '--',
-        'image.cmap': 'gray',
-        'lines.color': 'black',
-        'lines.linewidth': 2.0,
-        'mathtext.fontset': 'cm',
-        'patch.edgecolor': 'black',
-        'patch.facecolor': 'gray',
-        'savefig.edgecolor': 'white',
-        'savefig.facecolor': 'white',
-        'text.color': 'black',
-        'text.usetex': True,
-        'xtick.labelsize': 12,
-        'ytick.labelsize': 12,
-        'xtick.color': 'black',
-        'ytick.color': 'black'
+		'axes.edgecolor': 'black',
+		'axes.facecolor': 'white',
+		'axes.labelcolor': 'black',
+		'axes.grid': True,
+		'axes.titlesize': 12,
+		'axes.labelsize': 12,
+		'figure.edgecolor': 'white',
+		'figure.facecolor': 'white',
+		'figure.autolayout': True,
+		'figure.dpi': 100,
+		'font.family': 'serif',
+		'font.serif': 'Computer Modern',
+		'grid.color': 'black',
+		'grid.linestyle': '--',
+		'image.cmap': 'gray',
+		'lines.color': 'black',
+		'lines.linewidth': 2.0,
+		'mathtext.fontset': 'cm',
+		'patch.edgecolor': 'black',
+		'patch.facecolor': 'gray',
+		'savefig.edgecolor': 'white',
+		'savefig.facecolor': 'white',
+		'text.color': 'black',
+		'text.usetex': True,
+		'xtick.labelsize': 12,
+		'ytick.labelsize': 12,
+		'xtick.color': 'black',
+		'ytick.color': 'black'
 	}
 )
 
@@ -50,8 +50,6 @@ def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> p
 		plt: The plot.
 
 	Examples:
-		>>> from vrgaze.tennis import plot_3d
-		>>>
 		>>> plot = plot_3d(data, show_predictive_saccades=True)
 		>>> plot.show()
 		>>> plot.savefig("plot_3d.png")
@@ -112,7 +110,6 @@ def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> p
 			predictive_saccades = trial.gaze_events
 			for saccade in predictive_saccades:
 				if isinstance(saccade, PredictiveSaccade):
-
 					start_x = saccade.start_frame.ball_position_x
 					start_y = saccade.start_frame.ball_position_z
 					start_z = saccade.start_frame.ball_position_y
@@ -210,7 +207,7 @@ def plot_gaze_ball_angle(data):
 		frame.gaze_origin_z
 	) for frame in frames]
 
-	fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(5,5), sharex=True)
+	fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(5, 5), sharex=True)
 
 	timestamps = [frame.timestamp for frame in frames]
 	bounce_event = next((event for event in trial.ball_events if isinstance(event, FirstBounceEvent)), None)
@@ -239,7 +236,6 @@ def plot_gaze_ball_angle(data):
 	ax1.set_ylim(y_limits)
 	ax1.invert_yaxis()
 	ax1.set_ylabel("Angle [deg]")
-
 
 	ax2.set_title("Gaze-World Angle")
 	gaze_world_y = [frame.gaze_direction_y for frame in frames]

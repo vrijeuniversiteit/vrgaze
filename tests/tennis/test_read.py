@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from vrgaze.tennis.services.read import Reader, Validator
+from vrgaze.tennis.services.io.read import Reader, Validator
 
 
 class TestReader(TestCase):
