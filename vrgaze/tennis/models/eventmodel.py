@@ -18,6 +18,12 @@ class BallHitWithRacket(Event):
 class FirstBounceEvent(Event):
 	pass
 
+class BallHitFrontWall(Event):
+	"""Ball was returned too hard and hit the front wall before landing on the court"""
+	pass
+
+class SecondBounceEvent(Event):
+	pass
 
 @dataclass
 class Saccade(Event):

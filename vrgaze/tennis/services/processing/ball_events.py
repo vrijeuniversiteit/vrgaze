@@ -2,7 +2,7 @@ from dataclasses import field, dataclass
 from typing import List
 
 from vrgaze.tennis.models.abstraction import Visitable, Visitor
-from vrgaze.tennis.models.eventmodel import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent
+from vrgaze.tennis.models.eventmodel import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
 
 
 class BallEvents(Visitor):
@@ -14,8 +14,10 @@ class BallEvents(Visitor):
 		events = BallEventsCalculator(trial)
 		events.detect_ball_crosses_net()
 		events.identify_hit_with_racket()
-		events.identify_bounce_event()
+		events.identify_bounce_events()
+		events.identify_ball_hit_front_wall()
 		trial.ball_events = events.events
+
 
 @dataclass
 class BallEventsCalculator:
@@ -47,9 +49,8 @@ class BallEventsCalculator:
 		frame = self.trial.frames[change_of_direction_index]
 		self.events.append(BallHitWithRacket(timestamp, frame))
 
-	def identify_bounce_event(self):
+	def identify_bounce_events(self):
 		y_positions = [frame.ball_position_y for frame in self.trial.frames]
-		z_positions = [frame.ball_position_z for frame in self.trial.frames]
 
 		derivative = [y_positions[i + 1] - y_positions[i] for i in range(len(y_positions) - 1)]
 		derivative.append(0)
@@ -57,25 +58,50 @@ class BallEventsCalculator:
 		is_close_to_ground = [abs(y) < 0.5 for y in y_positions]
 		derivative_is_positive = [d > 0 for d in derivative]
 
-		change_of_direction_index = next((i for i, (d, y) in enumerate(zip(derivative_is_positive, is_close_to_ground)) if
-										 d and y), None)
+		is_bouncing = [d and p for d, p in zip(derivative_is_positive, is_close_to_ground)]
+		number_of_bounces = is_bouncing.count(True)
 
-		if change_of_direction_index is None:
-			return
-		bounced_off_back_wall = z_positions[change_of_direction_index] < -15
-		bounced_off_tennis_net = -1 < z_positions[change_of_direction_index] < 1
-
-		if bounced_off_back_wall:
+		if number_of_bounces == 0:
 			return
 
-		if bounced_off_tennis_net:
+		if number_of_bounces == 1:
+			first_bounce_index = is_bouncing.index(True)
+			timestamp = self.trial.frames[first_bounce_index].timestamp
+			frame = self.trial.frames[first_bounce_index]
+			self.events.append(FirstBounceEvent(timestamp, frame))
+
+		if number_of_bounces > 1:
+			first_bounce_index = is_bouncing.index(True)
+			timestamp = self.trial.frames[first_bounce_index].timestamp
+			frame = self.trial.frames[first_bounce_index]
+			self.events.append(FirstBounceEvent(timestamp, frame))
+
+			is_bouncing[first_bounce_index] = False
+			second_bounce_index = is_bouncing.index(True)
+			timestamp = self.trial.frames[second_bounce_index].timestamp
+			frame = self.trial.frames[second_bounce_index]
+			self.events.append(SecondBounceEvent(timestamp, frame))
+
+
+	def identify_ball_hit_front_wall(self):
+		ball_z_positions = [frame.ball_position_z for frame in self.trial.frames]
+
+		derivative = [ball_z_positions[i + 1] - ball_z_positions[i] for i in range(len(ball_z_positions) - 1)]
+		derivative.append(0)
+
+		derivative_is_negative = [d < 0 for d in derivative]
+		position_is_positive = [z > 0 for z in ball_z_positions]
+
+		change_direction_on_opponent_side = [d and p for d, p in zip(derivative_is_negative, position_is_positive)]
+
+		hit_front_wall_index = next((i for i, d in enumerate(change_direction_on_opponent_side) if d), None)
+
+		if hit_front_wall_index is None:
 			return
 
-		timestamp = self.trial.frames[change_of_direction_index].timestamp
-		frame = self.trial.frames[change_of_direction_index]
-		self.events.append(FirstBounceEvent(timestamp, frame))
+		timestamp = self.trial.frames[hit_front_wall_index].timestamp
+		frame = self.trial.frames[hit_front_wall_index]
+		self.events.append(BallHitFrontWall(timestamp, frame))
 
 	def get_events_of_type(self, FirstBounceEvent):
 		return [event for event in self.events if isinstance(event, FirstBounceEvent)]
-
-

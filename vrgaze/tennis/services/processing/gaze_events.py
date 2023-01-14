@@ -15,9 +15,9 @@ class GazeEvents(Visitor):
 
 	def visit(self, trial: Visitable):
 		trial = trial
-		events = GazeEventCalculator(trial)
-		events.calculate_saccades()
-		trial.gaze_events = events.events
+		calculator = GazeEventCalculator(trial)
+		calculator.calculate_saccades()
+		trial.gaze_events = calculator.events
 
 
 @dataclass

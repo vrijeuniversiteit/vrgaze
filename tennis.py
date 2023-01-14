@@ -6,7 +6,7 @@ from vrgaze.tennis import plot_3d, plot_birdview, plot_side, plot_gaze_ball_angl
 experts = load_condition("Experts", path_to_folder_with_csv_data())
 novices = load_condition("Novices", path_to_folder_with_csv_data())
 
-data = ExperimentalData([experts, novices])
+data = ExperimentalData([novices, experts])
 
 data.analyze_trials()
 

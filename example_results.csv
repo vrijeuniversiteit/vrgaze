@@ -1,5 +1,9 @@
-Condition,Participant,Ball Number,Block Number,Test,Timestamp,Saccade Angle Amplitude,Angle Ball-Gaze Start,Angle Ball-Gaze End,Result X,Result Y,Result Z,Distance To Target
-Experts,1,1,2,2,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
-Experts,1,1,2,2,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
-Novices,1,1,2,2,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
-Novices,1,1,2,2,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
+Condition,Participant,BallNumber,BlockNumber,TestID,IsValid,SaccadeTimestamp,SaccadeAngleAmplitude,AngleBallToGazeAtSaccadeStart,AngleBallToGazeAtSaccadeEnd,BallLandingPositionX,BallLandingPositionY,BallLandingPositionZ,BallDistanceToTarget
+Novices,1,1,2,2,False,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
+Novices,1,2,1,2,False,,,,,,,,
+Novices,1,1,2,2,False,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
+Novices,1,2,1,2,False,,,,,,,,
+Experts,1,1,2,2,False,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
+Experts,1,2,1,2,False,,,,,,,,
+Experts,1,1,2,2,False,1.166,1.150,4.274,5.424,-2.881,0.033,12.057,3.109
+Experts,1,2,1,2,False,,,,,,,,

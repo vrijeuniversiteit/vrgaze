@@ -60,7 +60,7 @@ class ExperimentalData(Visitable):
 			>>> "Distance To Target": The distance between the ball's final position and the closest target [meters]
 		"""
 
-		visitor = CSVWriter()
+		writer = CSVWriter()
 		for condition in self.conditions:
-			visitor.visit_with_context(condition, condition.name)
-		visitor.save(filepath)
+			writer.visit_with_context(condition, condition.name)
+		writer.save(filepath)

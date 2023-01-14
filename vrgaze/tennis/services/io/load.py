@@ -14,8 +14,6 @@ def load_condition(name: str, folder_path: str) -> ConditionData:
 
 	Examples:
 		# For a single condition:
-		>>> from vrgaze.tennis import load_condition, ExperimentalData
-		>>>
 		>>> condition = load_condition("Experts", "path/to/folder")
 		>>> print(condition)
 		>>> Name=Experts, Participants=10
