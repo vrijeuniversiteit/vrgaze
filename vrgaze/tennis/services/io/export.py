@@ -43,13 +43,17 @@ class CSVWriter(Visitor):
 		condition = self.condition
 
 		first_bounce = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)][0]
-		second_bounce = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)][0]
+
+		second_bounces = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)]
+
+		if len(second_bounces) == 0:
+			second_bounce = None
 
 		is_trial_valid = True
 		hit_front_wall = [event for event in trial.ball_events if isinstance(event, BallHitFrontWall)]
 		if len(hit_front_wall) > 0:
 			hit_front_wall_timestamp = hit_front_wall[0].timestamp
-			if second_bounce.timestamp > hit_front_wall_timestamp:
+			if (second_bounce != None) & (second_bounce.timestamp > hit_front_wall_timestamp):
 				is_trial_valid = False
 
 		if len(predictive_saccades) == 0:

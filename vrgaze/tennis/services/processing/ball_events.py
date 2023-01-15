@@ -52,13 +52,18 @@ class BallEventsCalculator:
 	def identify_bounce_events(self):
 		y_positions = [frame.ball_position_y for frame in self.trial.frames]
 
-		derivative = [y_positions[i + 1] - y_positions[i] for i in range(len(y_positions) - 1)]
-		derivative.append(0)
+		derivative_moving_upwards = [y_positions[i + 1] - y_positions[i] for i in range(len(y_positions) - 1)]
+		derivative_moving_upwards.append(0)
 
 		is_close_to_ground = [abs(y) < 0.5 for y in y_positions]
-		derivative_is_positive = [d > 0 for d in derivative]
+		is_moving_up = [d > 0 for d in derivative_moving_upwards]
 
-		is_bouncing = [d and p for d, p in zip(derivative_is_positive, is_close_to_ground)]
+		is_changing_direction = [is_moving_up[i + 1] - is_moving_up[i] for i in range(len(is_moving_up) - 1)]
+		is_changing_direction.insert(0, 0)
+
+		is_changing_direction_in_upwards_direction = [d > 0 for d in is_changing_direction]
+
+		is_bouncing = [d and p for d, p in zip(is_changing_direction_in_upwards_direction, is_close_to_ground)]
 		number_of_bounces = is_bouncing.count(True)
 
 		if number_of_bounces == 0:
@@ -82,7 +87,6 @@ class BallEventsCalculator:
 			frame = self.trial.frames[second_bounce_index]
 			self.events.append(SecondBounceEvent(timestamp, frame))
 
-
 	def identify_ball_hit_front_wall(self):
 		ball_z_positions = [frame.ball_position_z for frame in self.trial.frames]
 
@@ -93,7 +97,8 @@ class BallEventsCalculator:
 		position_is_positive = [z > 0 for z in ball_z_positions]
 
 		bounce_off_back_wall_or_hit_by_racket_index = derivative_is_negative.index(False)
-		derivative_is_negative[:bounce_off_back_wall_or_hit_by_racket_index] = [False]*bounce_off_back_wall_or_hit_by_racket_index
+		derivative_is_negative[:bounce_off_back_wall_or_hit_by_racket_index] = [
+																				   False] * bounce_off_back_wall_or_hit_by_racket_index
 
 		change_direction_on_opponent_side = [d and p for d, p in zip(derivative_is_negative, position_is_positive)]
 

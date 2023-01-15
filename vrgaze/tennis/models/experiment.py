@@ -49,19 +49,27 @@ class ExperimentalData(Visitable):
 			>>> data.to_csv("example_results.csv")
 
 			# Understanding the data
+			FirstBounceTimestamp,FirstBouncePositionX,FirstBouncePositionY,FirstBouncePositionZ,SaccadeTimestamp,SaccadeAngleAmplitude,AngleBallToGazeAtSaccadeStart,AngleBallToGazeAtSaccadeEnd,BallLandingPositionX,BallLandingPositionY,BallLandingPositionZ,BallDistanceToTarget
+
 			>>> "Condition": The name of the condition given when the data is loaded
 			>>> "Participant": The participant ID
-			>>> "Ball Number": The current ball number
-			>>> "Block Number": The current block number
-			>>> "Test": The current test number
-			>>> "Timestamp": The timestamp of the predictive saccade
-			>>> "Saccade Angle Amplitude": The angle amplitude of the predictive saccade [degrees]
-			>>> "Angle Ball-Gaze Start": The angle between the ball and the gaze direction at the start of the predictive saccade [degrees]
-			>>> "Angle Ball-Gaze End": The angle between the ball and the gaze direction at the end of the predictive saccade [degrees]
-			>>> "Result X": The x-coordinate of the ball's final position when hitting the ground
-			>>> "Result Y": The y-coordinate of the ball's final position when hitting the ground
-			>>> "Result Z": The z-coordinate of the ball's final position when hitting the ground
-			>>> "Distance To Target": The distance between the ball's final position and the closest target [meters]
+			>>> "BallNumber": The current ball number
+			>>> "BlockNumber": The current block number
+			>>> "TestID": The current test number
+			>>> "IsValid": Whether the trial is valid or not. A trial is not valid if the ball is not returned or if
+			the ball hits the front wall before the second bounce.
+			>>> FirstBounceTimestamp: The timestamp of the first bounce
+			>>> FirstBouncePositionX: The X position of the first bounce
+			>>> FirstBouncePositionY: The Y position of the first bounce
+			>>> FirstBouncePositionZ: The Z position of the first bounce
+			>>> SaccadeTimestamp: The timestamp of the predictive saccade
+			>>> SaccadeAngleAmplitude: The angle amplitude of the predictive saccade [degrees]
+			>>> AngleBallToGazeAtSaccadeStart: The angle between the ball and the gaze direction at the start of the predictive saccade [degrees]
+			>>> AngleBallToGazeAtSaccadeEnd: The angle between the ball and the gaze direction at the end of the predictive saccade [degrees]
+			>>> BallLandingPositionX: The X position of the ball at the end of the predictive saccade
+			>>> BallLandingPositionY: The Y position of the ball at the end of the predictive saccade
+			>>> BallLandingPositionZ: The Z position of the ball at the end of the predictive saccade
+			>>> BallDistanceToTarget: The distance between the ball and the target at the end of the predictive saccade
 		"""
 
 		writer = CSVWriter()
