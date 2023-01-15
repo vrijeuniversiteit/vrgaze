@@ -1,14 +1,23 @@
+from dataclasses import dataclass
 from typing import List
 
+@dataclass
+class SaccadeCandidate:
+	start_index: int
+	end_index: int
+	# Flags to be set by analysis
+	is_saccade_angle_bigger_than_threshold: bool = False
 
-class Saccades:
+
+
+class SaccadeDetector:
 
 	@staticmethod
 	def get_median(values: List[float]):
 		return sorted(values)[len(values) // 2]
 
 	@staticmethod
-	def begin_and_end_of_saccade(acceleration, median_absolute_acceleration):
+	def find(acceleration, median_absolute_acceleration):
 		start_candidates = [i for i in range(len(acceleration)) if abs(acceleration[i]) > median_absolute_acceleration]
 		end_candidates = [i for i in range(len(acceleration)) if abs(acceleration[i]) < median_absolute_acceleration]
 
@@ -28,4 +37,9 @@ class Saccades:
 					ends.append(end)
 					break
 
-		return starts, ends
+
+		saccades = []
+		for start, end in zip(starts, ends):
+			saccades.append(SaccadeCandidate(start, end))
+
+		return saccades

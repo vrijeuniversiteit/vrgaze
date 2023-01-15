@@ -43,7 +43,6 @@ class CSVWriter(Visitor):
 		condition = self.condition
 
 		first_bounce = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)][0]
-
 		second_bounces = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)]
 
 		if len(second_bounces) == 0:

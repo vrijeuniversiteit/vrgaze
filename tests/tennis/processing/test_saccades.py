@@ -1,6 +1,6 @@
 import unittest
 
-from vrgaze.tennis.services.processing.saccades import Saccades
+from vrgaze.tennis.services.processing.saccadedetector import SaccadeDetector
 from vrgaze.tennis.services.processing.integration import Integration
 
 
@@ -22,23 +22,29 @@ class TestSaccadeDetection(unittest.TestCase):
 	def test_begin_and_end_of_saccade_with_acceleration_greater_than_median(self):
 		acceleration = [0, 10, 20, 30, 0]
 		median_acceleration = 20
-		starts, ends = Saccades.begin_and_end_of_saccade(acceleration, median_acceleration)
-		self.assertEqual([3], starts)
-		self.assertEqual([4], ends)
+		saccades = SaccadeDetector.find(acceleration, median_acceleration)
+		self.assertEqual(1, len(saccades))
+		self.assertEqual(3, saccades[0].start_index)
+		self.assertEqual(4, saccades[0].end_index)
 
 
 	def test_should_not_return_saccades_that_dont_have_an_end(self):
 		acceleration = [0, 10, 20, 30, 40]
 		median_acceleration = 20
-		starts, ends = Saccades.begin_and_end_of_saccade(acceleration, median_acceleration)
-		self.assertEqual([], starts)
-		self.assertEqual([], ends)
+		saccades = SaccadeDetector.find(acceleration, median_acceleration)
+		self.assertEqual([], saccades)
 
 
-	def test_should_not_return_two_saccades(self):
+
+	def test_should_return_two_saccades(self):
 		acceleration = [0, 10, 20, 30, 10, 40, 40, 0]
 		median_acceleration = 20
-		starts, ends = Saccades.begin_and_end_of_saccade(acceleration, median_acceleration)
-		self.assertEqual([3, 5], starts)
-		self.assertEqual([4, 7], ends)
+		saccades = SaccadeDetector.find(acceleration, median_acceleration)
+
+		self.assertEqual(2, len(saccades))
+		self.assertEqual(3, saccades[0].start_index)
+		self.assertEqual(4, saccades[0].end_index)
+		self.assertEqual(5, saccades[1].start_index)
+		self.assertEqual(7, saccades[1].end_index)
+
 
