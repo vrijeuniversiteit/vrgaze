@@ -1,8 +1,8 @@
 from dataclasses import field, dataclass
 from typing import List
 
-from vrgaze.tennis.models.abstraction import Visitable, Visitor
-from vrgaze.tennis.models.eventmodel import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
+from vrgaze.tennis.models.common import Visitable, Visitor
+from vrgaze.tennis.models.balleventmodels import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
 
 
 class BallEvents(Visitor):

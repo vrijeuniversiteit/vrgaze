@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import List, Union
 
 from vrgaze.tennis import BallEvents, GazeEvents
-from vrgaze.tennis.models.abstraction import Visitable
+from vrgaze.tennis.models.common import Visitable
 from vrgaze.tennis.models.datamodel import ConditionData
 from vrgaze.tennis.services.io.export import CSVWriter
 from vrgaze.tennis.services.processing.preprocess import Preprocess

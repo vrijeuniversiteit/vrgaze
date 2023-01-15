@@ -1,13 +1,6 @@
-from dataclasses import dataclass
 from typing import List
 
-@dataclass
-class SaccadeCandidate:
-	start_index: int
-	end_index: int
-	# Flags to be set by analysis
-	is_saccade_angle_bigger_than_threshold: bool = False
-
+from vrgaze.tennis.models.gazeeventmodels import SaccadeCandidate
 
 
 class SaccadeDetector:
@@ -36,7 +29,6 @@ class SaccadeDetector:
 					starts.append(start)
 					ends.append(end)
 					break
-
 
 		saccades = []
 		for start, end in zip(starts, ends):

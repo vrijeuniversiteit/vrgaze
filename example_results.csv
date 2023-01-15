@@ -1,9 +1,9 @@
 Condition,Participant,BallNumber,BlockNumber,TestID,IsValid,FirstBounceTimestamp,FirstBouncePositionX,FirstBouncePositionY,FirstBouncePositionZ,SaccadeTimestamp,SaccadeAngleAmplitude,AngleBallToGazeAtSaccadeStart,AngleBallToGazeAtSaccadeEnd,BallLandingPositionX,BallLandingPositionY,BallLandingPositionZ,BallDistanceToTarget
 Novices,1,1,2,2,True,1.322,0.751,-0.065,-7.922,1.455,4.068,25.891,29.960,-2.881,0.033,12.057,3.109
-Novices,1,2,1,2,False,1.321,0.651,-0.065,-8.423,,,,,,,,
+Novices,1,2,1,2,True,1.321,0.651,-0.065,-8.423,1.343,4.384,21.139,25.524,-0.949,0.103,15.749,4.951
 Novices,1,1,2,2,True,1.322,0.751,-0.065,-7.922,1.455,4.068,25.891,29.960,-2.881,0.033,12.057,3.109
-Novices,1,2,1,2,False,1.321,0.651,-0.065,-8.423,,,,,,,,
+Novices,1,2,1,2,True,1.321,0.651,-0.065,-8.423,1.343,4.384,21.139,25.524,-0.949,0.103,15.749,4.951
 Experts,1,1,2,2,True,1.322,0.751,-0.065,-7.922,1.455,4.068,25.891,29.960,-2.881,0.033,12.057,3.109
-Experts,1,2,1,2,False,1.321,0.651,-0.065,-8.423,,,,,,,,
+Experts,1,2,1,2,True,1.321,0.651,-0.065,-8.423,1.343,4.384,21.139,25.524,-0.949,0.103,15.749,4.951
 Experts,1,1,2,2,True,1.322,0.751,-0.065,-7.922,1.455,4.068,25.891,29.960,-2.881,0.033,12.057,3.109
-Experts,1,2,1,2,False,1.321,0.651,-0.065,-8.423,,,,,,,,
+Experts,1,2,1,2,True,1.321,0.651,-0.065,-8.423,1.343,4.384,21.139,25.524,-0.949,0.103,15.749,4.951

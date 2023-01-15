@@ -1,4 +1,4 @@
-from vrgaze.tennis.models.abstraction import Visitor, Visitable
+from vrgaze.tennis.models.common import Visitor, Visitable
 
 
 # TODO: Implement preprocessor to interpolate missing frames (gaze where not valid)

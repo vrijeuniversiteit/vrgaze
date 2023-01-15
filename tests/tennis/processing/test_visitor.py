@@ -1,7 +1,7 @@
 import unittest
 from dataclasses import dataclass
 
-from vrgaze.tennis.models.abstraction import Visitor, Visitable
+from vrgaze.tennis.models.common import Visitor, Visitable
 
 
 class TestVisitor(unittest.TestCase):

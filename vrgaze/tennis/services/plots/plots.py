@@ -2,7 +2,8 @@ from matplotlib import pyplot as plt, cycler
 
 from vrgaze.tennis.models.datamodel import Trajectory
 from vrgaze.tennis import ExperimentalData
-from vrgaze.tennis.models.eventmodel import PredictiveSaccade, FirstBounceEvent
+from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
+from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade
 from vrgaze.tennis.services.processing.angles import Angles
 
 plt.rcParams.update(

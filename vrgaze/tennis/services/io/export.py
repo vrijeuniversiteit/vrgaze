@@ -3,8 +3,9 @@ import dataclasses
 from dataclasses import field, dataclass
 from typing import List
 
-from vrgaze.tennis.models.abstraction import Visitable, Visitor
-from vrgaze.tennis.models.eventmodel import PredictiveSaccade, FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
+from vrgaze.tennis.models.common import Visitable, Visitor
+from vrgaze.tennis.models.balleventmodels import FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
+from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade
 
 
 @dataclass
@@ -55,7 +56,9 @@ class CSVWriter(Visitor):
 			if (second_bounce != None) & (second_bounce.timestamp > hit_front_wall_timestamp):
 				is_trial_valid = False
 
-		if len(predictive_saccades) == 0:
+		predictive_saccade_of_interest = [sac for sac in predictive_saccades if sac.is_within_bounce_window]
+
+		if len(predictive_saccade_of_interest) == 0:
 			trial_export_data = TrialExportData(
 				Condition=condition,
 				Participant=participant,
@@ -77,7 +80,7 @@ class CSVWriter(Visitor):
 				BallDistanceToTarget=None,
 			)
 		else:
-			saccade = predictive_saccades[-1]
+			saccade = predictive_saccade_of_interest[-1]
 			trial_export_data = TrialExportData(
 				Condition=condition,
 				Participant=participant,

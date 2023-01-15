@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 
-from vrgaze.tennis.models.abstraction import Visitable, Visitor
+from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
+from vrgaze.tennis.models.common import Visitable, Visitor, Event
 from vrgaze.tennis.models.datamodel import Trial
-from vrgaze.tennis.models.eventmodel import Event, FirstBounceEvent, CorrectiveSaccade, PredictiveSaccade
+from vrgaze.tennis.models.gazeeventmodels import CorrectiveSaccade, PredictiveSaccade, SaccadeCandidate
 from vrgaze.tennis.services.processing.saccadedetector import SaccadeDetector
 from vrgaze.tennis.services.processing.integration import Integration
 from vrgaze.tennis.services.processing.angles import Angles
@@ -21,9 +22,11 @@ class GazeEvents(Visitor):
 		trial.gaze_events = calculator.events
 
 
-class Threshold(Enum):
+class THRESHOLD(Enum):
 	REQUIRED_GAZE_SPEED_FACTOR = 5  # Gaze needs to move 5x faster than the median gaze speed
 	MINIMUM_SACCADE_ANGLE_AMPLITUDE_DEGREE = 1  # Minimum angle amplitude of a saccade. If smaller, the saccade is ignored
+	MINIMUM_SPEED_FASTER_THAN_BALL_PCT = 0.2  # Gaze needs to be at least 20% faster than the ball
+	MAXIMUM_TIME_WINDOW_START_BEFORE_BOUNCE_SECONDS = 0.4  # Tag whether the saccade started within 400ms before the ball bounce
 
 
 @dataclass
@@ -44,56 +47,40 @@ class GazeEventCalculator:
 			frame.gaze_origin_z
 		) for frame in frames]
 
-
-		saccades = self.find_saccade_candidates_based_on_gaze_velocity(
-			Threshold.REQUIRED_GAZE_SPEED_FACTOR,
+		saccades = self.identify_saccade_candidates_based_on_gaze_velocity(
+			THRESHOLD.REQUIRED_GAZE_SPEED_FACTOR,
 			world_gaze_angle
 		)
 
-		acceleration_differences_mask = self.saccade_amplitude_bigger_than_threshhold(
-			Threshold.MINIMUM_SACCADE_ANGLE_AMPLITUDE_DEGREE,
+		saccades = self.identify_saccade_amplitude_bigger_than_threshhold(
+			THRESHOLD.MINIMUM_SACCADE_ANGLE_AMPLITUDE_DEGREE,
 			saccades,
 			world_gaze_angle
 		)
 
-		minimal_velocity_difference_from_ball_pct = 0.2
-		gaze_velocity_at_start = [world_gaze_angle[saccade.start_index + 1] - world_gaze_angle[saccade.start_index] for
-								  saccade
-								  in saccades]
-		ball_velocity_at_start = [ball_gaze_angle[saccade.start_index + 1] - ball_gaze_angle[saccade.start_index] for
-								  saccade
-								  in saccades]
-		ball_velocity_mask = [abs(gaze_velocity_at_start[i]) > abs(ball_velocity_at_start[i]) * (
-				1 + minimal_velocity_difference_from_ball_pct) for i in range(len(gaze_velocity_at_start))]
+		saccades = self.identify_gaze_moves_faster_than_ball(
+			THRESHOLD.MINIMUM_SPEED_FASTER_THAN_BALL_PCT,
+			ball_gaze_angle,
+			saccades,
+			world_gaze_angle
+		)
 
-		bounce_event = next((e for e in self.trial.ball_events if isinstance(e, FirstBounceEvent)), None)
-		bounce_time = bounce_event.timestamp
+		saccades = self.identify_saccade_within_time_window(
+			THRESHOLD.MAXIMUM_TIME_WINDOW_START_BEFORE_BOUNCE_SECONDS,
+			frames,
+			saccades
+		)
 
-		start_timestamps = [frames[saccade.start_index].timestamp for saccade in saccades]
-		window_before_bounce = 0.4
-		bounce_window_mask = [start_timestamps[i] < bounce_time + window_before_bounce for i in
-							  range(len(start_timestamps))]
+		saccades = self.identify_is_saccade_corrective(ball_gaze_angle, saccades)
 
-		all_saccades_mask = [acceleration_differences_mask[i] and ball_velocity_mask[i] and bounce_window_mask[i] for i
-							 in range(len(acceleration_differences_mask))]
-
-		# get only occurences where the gaze ball angle was closer to the end of the acceleration
-		ball_gaze_angle_start = [ball_gaze_angle[saccade.start_index] for saccade in saccades]
-		ball_gaze_angle_end = [ball_gaze_angle[saccade.end_index] for saccade in saccades]
-		corrective_saccade_mask = [abs(ball_gaze_angle_start[i]) < abs(ball_gaze_angle_end[i]) for i in
-								   range(len(ball_gaze_angle_start))]
-
-		for saccade, is_saccade, is_corrective in zip(saccades, all_saccades_mask, corrective_saccade_mask):
-
-			if not is_saccade:
-				continue
-
+		for saccade in saccades:
 			end_frame = frames[saccade.start_index]
 			start_frame = frames[saccade.end_index]
 			angle_amplitude = world_gaze_angle[saccade.end_index] - world_gaze_angle[saccade.start_index]
 			angle_start = world_gaze_angle[saccade.start_index]
 			angle_end = world_gaze_angle[saccade.end_index]
-			if is_corrective:
+
+			if saccade.is_corrective:
 				self.events.append(
 					CorrectiveSaccade(
 						end_frame.timestamp,
@@ -101,7 +88,9 @@ class GazeEventCalculator:
 						start_frame,
 						angle_amplitude,
 						angle_start,
-						angle_end
+						angle_end,
+						saccade.is_corrective,
+						saccade.is_within_bounce_window
 					)
 				)
 			else:
@@ -112,19 +101,71 @@ class GazeEventCalculator:
 						start_frame,
 						angle_amplitude,
 						angle_start,
-						angle_end
+						angle_end,
+						saccade.is_corrective,
+						saccade.is_within_bounce_window
 					)
 				)
 
-	def saccade_amplitude_bigger_than_threshhold(self, threshold: Threshold, saccades, world_gaze_angle):
+	def identify_is_saccade_corrective(self, ball_gaze_angle, saccades : List[SaccadeCandidate]):
+		ball_gaze_angle_start = [ball_gaze_angle[saccade.start_index] for saccade in saccades]
+		ball_gaze_angle_end = [ball_gaze_angle[saccade.end_index] for saccade in saccades]
+		corrective_saccade_mask = [abs(ball_gaze_angle_start[i]) < abs(ball_gaze_angle_end[i]) for i in
+								   range(len(ball_gaze_angle_start))]
 
-		acceleration_differences = [world_gaze_angle[saccade.end_index] - world_gaze_angle[saccade.start_index] for
-									saccade in
-									saccades]
-		acceleration_differences_mask = [abs(a) > threshold.value for a in acceleration_differences]
-		return acceleration_differences_mask
+		for i in range(len(saccades)):
+			saccades[i].is_corrective = corrective_saccade_mask[i]
 
-	def find_saccade_candidates_based_on_gaze_velocity(self, threshold: Threshold, world_gaze_angle):
+		return saccades
+
+	def identify_saccade_within_time_window(self, threshold: THRESHOLD, frames, saccades: List[SaccadeCandidate]):
+		bounce_event = next((e for e in self.trial.ball_events if isinstance(e, FirstBounceEvent)), None)
+		bounce_time = bounce_event.timestamp
+		start_timestamps = [frames[saccade.start_index].timestamp for saccade in saccades]
+
+		bounce_window_mask = [start_timestamps[i] < bounce_time + threshold.value for i in
+							  range(len(start_timestamps))]
+
+		for i in range(len(saccades)):
+			saccades[i].is_within_bounce_window = bounce_window_mask[i]
+
+		return saccades
+
+	def identify_gaze_moves_faster_than_ball(self, threshold: THRESHOLD, ball_gaze_angle, saccades, world_gaze_angle):
+
+		gaze_velocity_at_start = [
+			world_gaze_angle[saccade.start_index + 1] - world_gaze_angle[saccade.start_index] for saccade in saccades
+		]
+
+		ball_velocity_at_start = [
+			ball_gaze_angle[saccade.start_index + 1] - ball_gaze_angle[saccade.start_index] for saccade in saccades
+		]
+
+		ball_velocity_mask = [
+			abs(gaze_velocity_at_start[i]) > abs(ball_velocity_at_start[i]) * (1 + threshold.value) for i in
+			range(len(gaze_velocity_at_start))
+		]
+
+		for i in range(len(saccades)):
+			saccades[i].identify_gaze_moves_faster_than_ball = ball_velocity_mask[i]
+
+		return saccades
+
+	def identify_saccade_amplitude_bigger_than_threshhold(
+		self, threshold: THRESHOLD, saccades: List[SaccadeCandidate],
+		world_gaze_angle
+	):
+		acceleration_differences = [
+			world_gaze_angle[saccade.end_index] - world_gaze_angle[saccade.start_index] for saccade in saccades
+		]
+
+		for i in range(len(saccades)):
+			if abs(acceleration_differences[i]) > threshold.value:
+				saccades[i].is_eye_moving_enough = True
+
+		return saccades
+
+	def identify_saccade_candidates_based_on_gaze_velocity(self, threshold: THRESHOLD, world_gaze_angle):
 		acceleration = Integration.get_acceleration(world_gaze_angle)
 		absolute_acceleration = [abs(a) for a in acceleration]
 		median_acceleration = SaccadeDetector.get_median(absolute_acceleration)

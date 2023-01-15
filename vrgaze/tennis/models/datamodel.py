@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from vrgaze.tennis.models.abstraction import Visitable
+from vrgaze.tennis.models.common import Visitable
 
 
 @dataclass

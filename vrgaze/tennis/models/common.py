@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 
 class Visitable(ABC):
@@ -15,3 +16,8 @@ class Visitor(ABC):
 	@abstractmethod
 	def visit_with_context(self, trial: Visitable, condition_name: str):
 		...
+
+@dataclass
+class Event:
+	timestamp: float
+	frame: "Frame"
