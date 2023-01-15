@@ -104,6 +104,22 @@ class TestEvents(unittest.TestCase):
 		has_event = events.contains(BallHitFrontWall)
 		self.assertTrue(has_event)
 
+	def test_identify_ball_bounce_off_back_wall_event_ignore_when_ball_is_served(self):
+		timestamps = [0.0, 1.0, 2.0]
+		z_position_ball = [11, 10, 9]
+		height_of_ball = [2, 3, 2]
+
+		builder = TrialBuilder()
+		builder.with_frame(timestamps[0], z_position_ball[0], height_of_ball[0])
+		builder.with_frame(timestamps[1], z_position_ball[1], height_of_ball[1])
+		builder.with_frame(timestamps[2], z_position_ball[2], height_of_ball[2])
+		trial = builder.build()
+
+		events = BallEventsCalculator(trial)
+		events.identify_ball_hit_front_wall()
+		has_event = events.contains(BallHitFrontWall)
+		self.assertFalse(has_event)
+
 	def test_identify_ball_bounce_off_back_wall_event_should_not_trigger_when_not_hit_wall(self):
 		timestamps = [0.0, 1.0, 2.0]
 		z_position_ball = [0, -11, 0]

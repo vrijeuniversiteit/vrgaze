@@ -13,8 +13,8 @@ class BallEvents(Visitor):
 		trial = trial
 		events = BallEventsCalculator(trial)
 		events.detect_ball_crosses_net()
-		events.identify_hit_with_racket()
 		events.identify_bounce_events()
+		events.identify_hit_with_racket()
 		events.identify_ball_hit_front_wall()
 		trial.ball_events = events.events
 
@@ -91,6 +91,9 @@ class BallEventsCalculator:
 
 		derivative_is_negative = [d < 0 for d in derivative]
 		position_is_positive = [z > 0 for z in ball_z_positions]
+
+		bounce_off_back_wall_or_hit_by_racket_index = derivative_is_negative.index(False)
+		derivative_is_negative[:bounce_off_back_wall_or_hit_by_racket_index] = [False]*bounce_off_back_wall_or_hit_by_racket_index
 
 		change_direction_on_opponent_side = [d and p for d, p in zip(derivative_is_negative, position_is_positive)]
 

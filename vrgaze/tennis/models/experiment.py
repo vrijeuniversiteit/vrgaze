@@ -5,7 +5,7 @@ from vrgaze.tennis import BallEvents, GazeEvents
 from vrgaze.tennis.models.abstraction import Visitable
 from vrgaze.tennis.models.datamodel import ConditionData
 from vrgaze.tennis.services.io.export import CSVWriter
-from vrgaze.tennis.services.processing.preprocess import Preprocessor
+from vrgaze.tennis.services.processing.preprocess import Preprocess
 
 
 @dataclass
@@ -23,7 +23,11 @@ class ExperimentalData(Visitable):
 			condition.process(visitor)
 
 	def analyze_trials(self):
-		visitors = [Preprocessor(), BallEvents(), GazeEvents()]
+		visitors = [
+			Preprocess(),
+			BallEvents(),
+			GazeEvents()
+		]
 
 		for visitor in visitors:
 			for condition in self.conditions:
