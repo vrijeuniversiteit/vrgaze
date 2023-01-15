@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 
+from tests.tennis.processing.time_of_saccade import Timing
 from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
 from vrgaze.tennis.models.common import Visitable, Visitor, Event
 from vrgaze.tennis.models.datamodel import Trial
@@ -109,7 +110,7 @@ class GazeEventCalculator:
 					)
 				)
 
-	def identify_is_saccade_corrective(self, ball_gaze_angle, saccades : List[SaccadeCandidate]):
+	def identify_is_saccade_corrective(self, ball_gaze_angle, saccades: List[SaccadeCandidate]):
 		ball_gaze_angle_start = [ball_gaze_angle[saccade.start_index] for saccade in saccades]
 		ball_gaze_angle_end = [ball_gaze_angle[saccade.end_index] for saccade in saccades]
 		corrective_saccade_mask = [abs(ball_gaze_angle_start[i]) < abs(ball_gaze_angle_end[i]) for i in
@@ -125,11 +126,14 @@ class GazeEventCalculator:
 		bounce_time = bounce_event.timestamp_start
 		start_timestamps = [frames[saccade.start_index].timestamp for saccade in saccades]
 
-		bounce_window_mask = [start_timestamps[i] < bounce_time + threshold.value for i in
-							  range(len(start_timestamps))]
+		mask = Timing.is_within_window(
+			bounce_time,
+			threshold.value,
+			start_timestamps
+		)
 
 		for i in range(len(saccades)):
-			saccades[i].is_within_bounce_window = bounce_window_mask[i]
+			saccades[i].is_within_bounce_window = mask[i]
 
 		return saccades
 

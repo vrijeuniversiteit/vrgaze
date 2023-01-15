@@ -1,6 +1,7 @@
 import unittest
 
 from tests.tennis.builders.trial_builder import TrialBuilder
+from tests.tennis.processing.time_of_saccade import Timing
 
 
 class TestGazeEvents(unittest.TestCase):
@@ -28,6 +29,22 @@ class TestGazeEvents(unittest.TestCase):
 			gaze_direction_y,
 			gaze_direction_z,
 		).build()
+
+	def test_should_only_include_saccades_starting_within_window(self):
+
+		saccade_start_timesamps = [0.0, 0.5, 1.0]
+		assumed_window_seconds = 0.5
+		assumed_ball_bounce_time = 0.9
+
+		mask = Timing.is_within_window(
+			assumed_ball_bounce_time,
+			assumed_window_seconds,
+			saccade_start_timesamps
+			)
+
+		self.assertEqual(mask, [False, True, False])
+
+
 
 
 
