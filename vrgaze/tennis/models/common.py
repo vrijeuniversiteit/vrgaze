@@ -19,5 +19,5 @@ class Visitor(ABC):
 
 @dataclass
 class Event:
-	timestamp: float
+	timestamp_start: float
 	frame: "Frame"

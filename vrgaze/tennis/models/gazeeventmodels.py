@@ -16,7 +16,8 @@ class SaccadeCandidate:
 
 @dataclass
 class Saccade(Event):
-	start_frame: "Frame"
+	timestamp_end: float
+	end_frame: "Frame"
 	angle_amplitude: float
 	angle_start: float
 	angle_end: float

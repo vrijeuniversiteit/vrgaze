@@ -23,7 +23,7 @@ class TestEvents(unittest.TestCase):
 		events = BallEventsCalculator(self.trial)
 		events.detect_ball_crosses_net()
 		net_cross = events.get_events_of_type(BallCrossesNetAfterServe)[0]
-		self.assertEqual(net_cross.timestamp, 1)
+		self.assertEqual(net_cross.timestamp_start, 1)
 
 	def test_identify_hit_with_racket(self):
 		events = BallEventsCalculator(self.trial)

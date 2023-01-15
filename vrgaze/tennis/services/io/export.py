@@ -52,7 +52,7 @@ class CSVWriter(Visitor):
 		is_trial_valid = True
 		hit_front_wall = [event for event in trial.ball_events if isinstance(event, BallHitFrontWall)]
 		if len(hit_front_wall) > 0:
-			hit_front_wall_timestamp = hit_front_wall[0].timestamp
+			hit_front_wall_timestamp = hit_front_wall[0].timestamp_start
 			if (second_bounce != None) & (second_bounce.timestamp > hit_front_wall_timestamp):
 				is_trial_valid = False
 
@@ -66,7 +66,7 @@ class CSVWriter(Visitor):
 				BlockNumber=block_number,
 				TestID=test_id,
 				IsValid=False,
-				FirstBounceTimestamp=f"{first_bounce.timestamp:.3f}",
+				FirstBounceTimestamp=f"{first_bounce.timestamp_start:.3f}",
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
@@ -88,11 +88,11 @@ class CSVWriter(Visitor):
 				BlockNumber=block_number,
 				TestID=test_id,
 				IsValid=is_trial_valid,
-				FirstBounceTimestamp=f"{first_bounce.timestamp:.3f}",
+				FirstBounceTimestamp=f"{first_bounce.timestamp_start:.3f}",
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
-				SaccadeTimestamp=f"{saccade.timestamp:.3f}",
+				SaccadeTimestamp=f"{saccade.timestamp_start:.3f}",
 				SaccadeAngleAmplitude=f"{saccade.angle_amplitude:.3f}",
 				AngleBallToGazeAtSaccadeStart=f"{saccade.angle_start:.3f}",
 				AngleBallToGazeAtSaccadeEnd=f"{saccade.angle_end:.3f}",

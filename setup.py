@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='vrgaze',
-	version="1.2.19",
+	version="1.2.20",
 	url='https://github.com/vrijeuniversiteit/vrgaze.git',
 	author='Daniel Müller',
 	author_email='d.muller at vu.nl',

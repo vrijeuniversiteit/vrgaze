@@ -1,5 +1,5 @@
-from vrgaze.tennis import load_condition, ExperimentalData, path_to_folder_with_csv_data
-from vrgaze.tennis import plot_3d, plot_birdview, plot_side, plot_gaze_ball_angle
+from vrgaze.tennis import load_condition, ExperimentalData, path_to_folder_with_csv_data, plot_3d, plot_birdview, plot_side
+from vrgaze.tennis import plot_gaze_ball_angle
 
 # Place all experimental data in a folder called 'data' in the root of your project.
 # Replace the second parameter below with the location of your data folder (e.g., 'data/experts/')

@@ -83,9 +83,10 @@ class GazeEventCalculator:
 			if saccade.is_corrective:
 				self.events.append(
 					CorrectiveSaccade(
+						start_frame.timestamp,
+						start_frame,
 						end_frame.timestamp,
 						end_frame,
-						start_frame,
 						angle_amplitude,
 						angle_start,
 						angle_end,
@@ -96,9 +97,10 @@ class GazeEventCalculator:
 			else:
 				self.events.append(
 					PredictiveSaccade(
+						start_frame.timestamp,
+						start_frame,
 						end_frame.timestamp,
 						end_frame,
-						start_frame,
 						angle_amplitude,
 						angle_start,
 						angle_end,
@@ -120,7 +122,7 @@ class GazeEventCalculator:
 
 	def identify_saccade_within_time_window(self, threshold: THRESHOLD, frames, saccades: List[SaccadeCandidate]):
 		bounce_event = next((e for e in self.trial.ball_events if isinstance(e, FirstBounceEvent)), None)
-		bounce_time = bounce_event.timestamp
+		bounce_time = bounce_event.timestamp_start
 		start_timestamps = [frames[saccade.start_index].timestamp for saccade in saccades]
 
 		bounce_window_mask = [start_timestamps[i] < bounce_time + threshold.value for i in
