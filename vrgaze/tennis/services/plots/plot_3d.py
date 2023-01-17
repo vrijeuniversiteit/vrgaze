@@ -1,16 +1,15 @@
 from matplotlib import pyplot as plt
 
 from vrgaze.tennis import ExperimentalData
-from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
 from vrgaze.tennis.models.datamodel import Trajectory
 from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade
 
 
-def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> plt:
+def plot_3d(data: ExperimentalData) -> plt:
 	"""Plot ball trajectories in 3D space.
 
 	Args:
-		show_predictive_saccades (bool): Whether to overlay predictive saccades on the plot.
+		trial_number (int): Which trial to plot. Defaults to 1.
 
 	Returns:
 		plt: The plot.
@@ -21,12 +20,11 @@ def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> p
 		>>> plot.savefig("plot_3d.png")
 	"""
 
-	trajectories = []
-
 	ax = plt.axes(projection='3d')
 	greys = ['#000000', '#333333', '#666666', '#999999']
 	ax.prop_cycle = 'cycler(color, ' + str(greys) + ')'
 
+	trajectories = []
 	for trial in data.conditions[0].participants[0].trials:
 		width = [frame.ball_position_x for frame in trial.frames]
 		length = [frame.ball_position_z for frame in trial.frames]
@@ -69,22 +67,19 @@ def plot_3d(data: ExperimentalData, show_predictive_saccades: bool = False) -> p
 	ax.plot([-half_net_width, -half_net_width], [0, 0], [0, 1.065], color='black')
 	ax.plot([half_net_width, half_net_width], [0, 0], [0, 1.065], color='black')
 
-	if show_predictive_saccades:
-		ball_bounce_events = [e for e in trial.ball_events if isinstance(e, FirstBounceEvent)]
-
-		for trial in data.conditions[0].participants[0].trials:
-			predictive_saccades = trial.gaze_events
-			for saccade in predictive_saccades:
-				if isinstance(saccade, PredictiveSaccade):
-					start_x = saccade.end_frame.ball_position_x
-					start_y = saccade.end_frame.ball_position_z
-					start_z = saccade.end_frame.ball_position_y
-					ax.scatter3D(start_x, start_y, start_z, color='green', marker='o', s=20, alpha=0.5)
-					end_x = saccade.frame.ball_position_x
-					end_y = saccade.frame.ball_position_z
-					end_z = saccade.frame.ball_position_y
-					# filled point green at end
-					ax.scatter3D(end_x, end_y, end_z, color='green', marker='o', s=20, alpha=1)
+	for trial in data.conditions[0].participants[0].trials:
+		predictive_saccades = trial.gaze_events
+		for saccade in predictive_saccades:
+			if isinstance(saccade, PredictiveSaccade):
+				start_x = saccade.end_frame.ball_position_x
+				start_y = saccade.end_frame.ball_position_z
+				start_z = saccade.end_frame.ball_position_y
+				ax.scatter3D(start_x, start_y, start_z, color='green', marker='o', s=20, alpha=0.5)
+				end_x = saccade.frame.ball_position_x
+				end_y = saccade.frame.ball_position_z
+				end_z = saccade.frame.ball_position_y
+				# filled point green at end
+				ax.scatter3D(end_x, end_y, end_z, color='green', marker='o', s=20, alpha=1)
 
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)

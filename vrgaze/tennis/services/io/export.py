@@ -20,14 +20,14 @@ class TrialExportData:
 	FirstBouncePositionX: float
 	FirstBouncePositionY: float
 	FirstBouncePositionZ: float
-	SaccadeTimestamp: float
-	SaccadeAngleAmplitude: float
-	AngleBallToGazeAtSaccadeStart: float
-	AngleBallToGazeAtSaccadeEnd: float
 	BallLandingPositionX: float
 	BallLandingPositionY: float
 	BallLandingPositionZ: float
 	BallDistanceToTarget: float
+	SaccadeTimestamp: float
+	SaccadeAngleAmplitude: float
+	AngleBallToGazeAtSaccadeStart: float
+	AngleBallToGazeAtSaccadeEnd: float
 
 
 @dataclass
@@ -70,14 +70,15 @@ class CSVWriter(Visitor):
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
+				BallLandingPositionX=f"{trial.result_location_x:.3f}",
+				BallLandingPositionY=f"{trial.result_location_y:.3f}",
+				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
+				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}",
 				SaccadeTimestamp=None,
 				SaccadeAngleAmplitude=None,
 				AngleBallToGazeAtSaccadeStart=None,
 				AngleBallToGazeAtSaccadeEnd=None,
-				BallLandingPositionX=None,
-				BallLandingPositionY=None,
-				BallLandingPositionZ=None,
-				BallDistanceToTarget=None,
+
 			)
 		else:
 			saccade = predictive_saccade_of_interest[-1]
@@ -92,14 +93,14 @@ class CSVWriter(Visitor):
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
+				BallLandingPositionX=f"{trial.result_location_x:.3f}",
+				BallLandingPositionY=f"{trial.result_location_y:.3f}",
+				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
+				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}",
 				SaccadeTimestamp=f"{saccade.timestamp_start:.3f}",
 				SaccadeAngleAmplitude=f"{saccade.angle_amplitude:.3f}",
 				AngleBallToGazeAtSaccadeStart=f"{saccade.angle_start:.3f}",
 				AngleBallToGazeAtSaccadeEnd=f"{saccade.angle_end:.3f}",
-				BallLandingPositionX=f"{trial.result_location_x:.3f}",
-				BallLandingPositionY=f"{trial.result_location_y:.3f}",
-				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
-				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}"
 			)
 
 		self.data.append(trial_export_data)

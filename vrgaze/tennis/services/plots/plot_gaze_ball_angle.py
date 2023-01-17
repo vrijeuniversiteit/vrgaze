@@ -4,11 +4,21 @@ from matplotlib import pyplot as plt
 
 from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
 from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade, CorrectiveSaccade
+from vrgaze.tennis.services.plots.trial_finder import TrialFinder
 from vrgaze.tennis.services.processing.angles import Angles
 
 
-def plot_gaze_ball_angle(data, time_after_bounce: float = 0.2):
-	trial = data.conditions[0].participants[0].trials[0]
+def plot_gaze_ball_angle(data, trial_number: int = 0, time_after_bounce: float = 0.2):
+
+	finder = TrialFinder(trial_number)
+	for condition in data.conditions:
+		finder.visit_with_context(condition, condition.name)
+
+	if finder.trial_not_found:
+		print(f"Trial not found for plotting, searched through {finder.current_trial_number} trials...")
+		return plt.figure()
+
+	trial = finder.trial
 	frames = trial.frames
 	ball_angle = [Angles.calculate_ball_gaze_angle(
 		frame.ball_position_y,
@@ -25,12 +35,13 @@ def plot_gaze_ball_angle(data, time_after_bounce: float = 0.2):
 	ball_position_y = [frame.ball_position_y for frame in frames]
 
 	# Figure setup
-	fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, figsize=(5, 8), sharex=True)
+	fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, figsize=(8, 8))
 	y_limits = (20, -20)
 	x_limits = (0, bounce_event.timestamp_start + time_after_bounce)
 
 	# Plot 1
 	ax1.set_title("Ball-Gaze Angle")
+	ax1.set_xlabel("Time [s]")
 	ax1.plot(timestamps, ball_angle)
 	ax1.axvline(x=bounce_event.timestamp_start, color="green", linestyle="--")
 	ax1.set_ylim(y_limits)
@@ -67,6 +78,7 @@ def plot_gaze_ball_angle(data, time_after_bounce: float = 0.2):
 	# Plot 2
 	ax3.set_title("Gaze-World Angle")
 	ax3.set_ylabel("Angle [deg]")
+	ax3.set_xlabel("Time [s]")
 	ax3.set_ylim(y_limits)
 	ax3.set_xlim(x_limits)
 	ax3.invert_yaxis()
@@ -84,10 +96,10 @@ def plot_gaze_ball_angle(data, time_after_bounce: float = 0.2):
 
 	#  Plot 3
 	ax5.set_title("Ball Flight Curve")
-	ax5.plot(timestamps, ball_position_y)
-	ax5.set_ylim((0, 5))
 	ax5.set_ylabel("Height [m]")
 	ax5.set_xlabel("Time [s]")
+	ax5.plot(timestamps, ball_position_y)
+	ax5.set_ylim((0, 5))
 
 	# Description of Plot 3
 	ax6.axis("off")

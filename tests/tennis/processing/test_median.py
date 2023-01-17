@@ -1,6 +1,6 @@
 import unittest
 
-from vrgaze.tennis.services.processing.saccadedetector import SaccadeDetector
+from vrgaze.tennis.services.processing.saccade_detector import SaccadeDetector
 
 
 class TestNumerics(unittest.TestCase):

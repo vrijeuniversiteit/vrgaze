@@ -1,3 +1,4 @@
+import matplotlib
 from matplotlib import pyplot as plt, cycler
 
 plt.rcParams.update(
@@ -25,11 +26,17 @@ plt.rcParams.update(
 		'savefig.edgecolor': 'white',
 		'savefig.facecolor': 'white',
 		'text.color': 'black',
-		# 'font.family': 'serif',
-		# 'text.usetex': False,
 		'xtick.labelsize': 12,
 		'ytick.labelsize': 12,
 		'xtick.color': 'black',
 		'ytick.color': 'black'
 	}
 )
+
+if matplotlib.checkdep_usetex("pdflatex"):
+	plt.rcParams.update(
+		{
+			'font.family': 'serif',
+			'text.usetex': True,
+		}
+	)

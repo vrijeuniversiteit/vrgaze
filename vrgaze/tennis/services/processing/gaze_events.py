@@ -7,7 +7,7 @@ from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
 from vrgaze.tennis.models.common import Visitable, Visitor, Event
 from vrgaze.tennis.models.datamodel import Trial
 from vrgaze.tennis.models.gazeeventmodels import CorrectiveSaccade, PredictiveSaccade, SaccadeCandidate
-from vrgaze.tennis.services.processing.saccadedetector import SaccadeDetector
+from vrgaze.tennis.services.processing.saccade_detector import SaccadeDetector
 from vrgaze.tennis.services.processing.integration import Integration
 from vrgaze.tennis.services.processing.angles import Angles
 
