@@ -26,7 +26,7 @@ plt.rcParams.update(
 		'savefig.edgecolor': 'white',
 		'savefig.facecolor': 'white',
 		'text.color': 'black',
-		'text.usetex': True,
+		'text.usetex': False,
 		'xtick.labelsize': 12,
 		'ytick.labelsize': 12,
 		'xtick.color': 'black',
