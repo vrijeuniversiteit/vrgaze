@@ -15,11 +15,12 @@ nav:
   - Contribute: contribute.md
   - Having Issues?: issues.md
 
+watch:
+  - vrgaze
+
 plugins:
   - search
   - mkdocstrings:
-      watch:
-        - vrgaze
       handlers:
         python: # Needs to have a handler so that classes are discovered
           options:

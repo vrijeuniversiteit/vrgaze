@@ -8,14 +8,11 @@ from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade
 def plot_3d(data: ExperimentalData) -> plt:
 	"""Plot ball trajectories in 3D space.
 
-	Args:
-		trial_number (int): Which trial to plot. Defaults to 1.
-
 	Returns:
 		plt: The plot.
 
 	Examples:
-		>>> plot = plot_3d(data, show_predictive_saccades=True)
+		>>> plot = plot_3d(data)
 		>>> plot.show()
 		>>> plot.savefig("plot_3d.png")
 	"""
