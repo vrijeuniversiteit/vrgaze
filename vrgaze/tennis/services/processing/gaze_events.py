@@ -123,6 +123,10 @@ class GazeEventCalculator:
 
 	def identify_saccade_within_time_window(self, threshold: THRESHOLD, frames, saccades: List[SaccadeCandidate]):
 		bounce_event = next((e for e in self.trial.ball_events if isinstance(e, FirstBounceEvent)), None)
+
+		if bounce_event is None:
+			return saccades
+
 		bounce_time = bounce_event.timestamp_start
 		start_timestamps = [frames[saccade.start_index].timestamp for saccade in saccades]
 
