@@ -1,10 +1,11 @@
-from vrgaze.tennis.models.common import Visitor, Visitable
+from vrgaze.tennis.models.common import Visitor
+from vrgaze.tennis.models.datamodel import Condition, Trial
 
 
 # TODO: Implement preprocessor to interpolate missing frames (gaze where not valid)
 class Preprocess(Visitor):
-	def visit_with_context(self, trial: Visitable, condition_name: str):
+	def visit_condition(self, condition: Condition, condition_name: str):
 		pass
 
-	def visit(self, trial: Visitable):
+	def visit(self, trial: Trial):
 		pass

@@ -28,8 +28,8 @@ def plot_3d(data: ExperimentalData) -> plt:
 
 	number_of_trajectories = len(trajectories)
 	alpha = 1 / number_of_trajectories
-	if number_of_trajectories > 100:
-		alpha = 0.01
+	if alpha < 0.002:
+		alpha = 0.002
 
 	ax = plt.axes(projection='3d')
 	for trajectory in trajectories:

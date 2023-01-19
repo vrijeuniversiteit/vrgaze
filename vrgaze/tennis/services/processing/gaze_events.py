@@ -4,19 +4,19 @@ from typing import List
 
 from tests.tennis.processing.time_of_saccade import Timing
 from vrgaze.tennis.models.balleventmodels import FirstBounceEvent
-from vrgaze.tennis.models.common import Visitable, Visitor, Event
-from vrgaze.tennis.models.datamodel import Trial
+from vrgaze.tennis.models.common import Visitor, Event
+from vrgaze.tennis.models.datamodel import Trial, Condition
 from vrgaze.tennis.models.gazeeventmodels import CorrectiveSaccade, PredictiveSaccade, SaccadeCandidate
-from vrgaze.tennis.services.processing.saccade_detector import SaccadeDetector
-from vrgaze.tennis.services.processing.integration import Integration
 from vrgaze.tennis.services.processing.angles import Angles
+from vrgaze.tennis.services.processing.integration import Integration
+from vrgaze.tennis.services.processing.saccade_detector import SaccadeDetector
 
 
 class GazeEvents(Visitor):
-	def visit_with_context(self, trial: Visitable, condition_name: str):
-		self.visit(trial)
+	def visit_condition(self, condition: Condition, condition_name: str):
+		self.visit(condition)
 
-	def visit(self, trial: Visitable):
+	def visit(self, trial: Trial):
 		trial = trial
 		calculator = GazeEventCalculator(trial)
 		calculator.calculate_saccades()

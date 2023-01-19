@@ -51,7 +51,7 @@ class Participant(Visitable):
 
 
 @dataclass
-class ConditionData(Visitable):
+class Condition(Visitable):
 	name: str
 	participants: List[Participant]
 

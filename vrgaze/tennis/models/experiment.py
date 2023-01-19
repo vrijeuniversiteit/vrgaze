@@ -3,16 +3,16 @@ from typing import List, Union
 
 from vrgaze.tennis import BallEvents, GazeEvents
 from vrgaze.tennis.models.common import Visitable
-from vrgaze.tennis.models.datamodel import ConditionData
+from vrgaze.tennis.models.datamodel import Condition
 from vrgaze.tennis.services.io.export import CSVWriter
 from vrgaze.tennis.services.processing.preprocess import Preprocess
 
 
 @dataclass
 class ExperimentalData(Visitable):
-	conditions: List[ConditionData]
+	conditions: List[Condition]
 
-	def __init__(self, data: Union[List[ConditionData], ConditionData]):
+	def __init__(self, data: Union[List[Condition], Condition]):
 		if isinstance(data, list):
 			self.conditions = data
 		else:
@@ -74,5 +74,5 @@ class ExperimentalData(Visitable):
 
 		writer = CSVWriter()
 		for condition in self.conditions:
-			writer.visit_with_context(condition, condition.name)
+			writer.visit_condition(condition, condition.name)
 		writer.save(filepath)

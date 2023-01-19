@@ -1,15 +1,16 @@
 from dataclasses import field, dataclass
 from typing import List
 
-from vrgaze.tennis.models.common import Visitable, Visitor
 from vrgaze.tennis.models.balleventmodels import Event, BallCrossesNetAfterServe, BallHitWithRacket, FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
+from vrgaze.tennis.models.common import Visitor
+from vrgaze.tennis.models.datamodel import Trial, Condition
 
 
 class BallEvents(Visitor):
-	def visit_with_context(self, trial: Visitable, condition_name: str):
-		self.visit(trial)
+	def visit_condition(self, condition: Condition, condition_name: str):
+		self.visit(condition)
 
-	def visit(self, trial: Visitable):
+	def visit(self, trial: Trial):
 		trial = trial
 		events = BallEventsCalculator(trial)
 		events.detect_ball_crosses_net()

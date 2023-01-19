@@ -127,7 +127,7 @@ class CSVWriter(Visitor):
 
 		self.data.append(trial_export_data)
 
-	def visit_with_context(self, condition: Visitable, condition_name: str):
+	def visit_condition(self, condition: Visitable, condition_name: str):
 		self.condition = condition_name
 		condition.process(self)
 

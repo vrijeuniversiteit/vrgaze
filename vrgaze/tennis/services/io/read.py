@@ -22,7 +22,9 @@ class Reader:
 
 	def read_files(self):
 		participants = []
+		participant_id = 0
 		for file in self.files:
+			participant_id += 1
 			with open(file, "r") as file:
 				content = file.readlines()
 				expected_header = 'participant_id,test_id,block_number,ball_number,timestamp,ball_position_x,ball_position_y,ball_position_z,shortest_path_normalized_x,shortest_path_normalized_y,shortest_path_normalized_z,look_direction_normalized_x,look_direction_normalized_y,look_direction_normalized_z,result_location_x,result_location_y,result_location_z,target_type,distance_to_closest_target,smi_camera_raycast_x,smi_camera_raycast_y,smi_camera_raycast_z,smi_binocular_por_x,smi_binocular_por_y,smi_binocular_por_is_valid,smi_ipd,smi_ipd_is_valid,smi_left_por_x,smi_left_por_y,smi_left_por_is_valid,smi_right_por_x,smi_right_por_y,smi_right_por_is_valid,smi_left_basepoint_x,smi_left_basepoint_y,smi_left_basepoint_z,smi_left_basepoint_is_valid,smi_right_basepoint_x,smi_right_basepoint_y,smi_right_basepoint_z,smi_right_basepoint_is_valid,smi_left_gazedirection_x,smi_left_gazedirection_y,smi_left_gazedirection_z,smi_left_gazedirection_is_valid,smi_right_gazedirection_x,smi_right_gazedirection_y,smi_right_gazedirection_z,smi_right_gazedirection_is_valid,tobii_gazeray_isvalid,tobii_gazeray_origin_x,tobii_gazeray_origin_y,tobii_gazeray_origin_z,tobii_gazeray_direction_x,tobii_gazeray_direction_y,tobii_gazeray_direction_z,tobii_left_pupil_isvalid,tobii_left_pupildiameter,tobii_left_ray_isvalid,tobii_left_ray_origin_x,tobii_left_ray_origin_y,tobii_left_ray_origin_z,tobii_left_ray_direction_x,tobii_left_ray_direction_y,tobii_left_ray_direction_z,tobii_right_pupil_isvalid,tobii_right_pupildiameter,tobii_right_ray_isvalid,tobii_right_ray_origin_x,tobii_right_ray_origin_y,tobii_right_ray_origin_z,tobii_right_ray_direction_x,tobii_right_ray_direction_y,tobii_right_ray_direction_z,participant_head_position_x,participant_head_position_y,participant_head_position_z,participant_head_rotation_x,participant_head_rotation_y,participant_head_rotation_z,racket_knob_position_x,racket_knob_position_y,racket_knob_position_z,racket_knob_rotation_x,racket_knob_rotation_y,racket_knob_rotation_z\n'
@@ -73,7 +75,6 @@ class Reader:
 							)
 						)
 
-
 					last_line = content[end - last_frame].split(",")
 					result_location_x = float(last_line[14])
 					result_location_y = float(last_line[15])
@@ -90,7 +91,7 @@ class Reader:
 
 					trials.append(
 						Trial(
-							participant_id=int(parts[0]),
+							participant_id=participant_id,
 							test_id=int(parts[1]),
 							block_number=int(parts[2]),
 							ball_number=int(parts[3]),
@@ -104,7 +105,7 @@ class Reader:
 
 			participants.append(
 				Participant(
-					participant_id=int(parts[0]),
+					participant_id=participant_id,
 					trials=trials
 				)
 			)

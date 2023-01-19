@@ -99,6 +99,14 @@ class TestReadFiles(TestReader):
 		self.reader.read_files()
 		self.assertEqual(len(self.reader.participants), 2)
 
+
+	def test_should_increment_participant_id(self):
+		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
+		self.reader.read_files()
+		self.assertEqual(self.reader.participants[0].participant_id, 1)
+		self.assertEqual(self.reader.participants[1].participant_id, 2)
+
+
 	def test_should_read_tobii_gazeorigin_and_direction(self):
 		self.reader.discover_files("vrgaze/example_data/tennis_data/experimental_condition")
 		self.reader.read_files()

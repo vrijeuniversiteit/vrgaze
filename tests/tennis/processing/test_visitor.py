@@ -2,6 +2,7 @@ import unittest
 from dataclasses import dataclass
 
 from vrgaze.tennis.models.common import Visitor, Visitable
+from vrgaze.tennis.models.datamodel import Condition, Trial
 
 
 class TestVisitor(unittest.TestCase):
@@ -42,8 +43,8 @@ class MockTrial(Visitable):
 class MockVisitor(Visitor):
 	number_trials_visited = 0
 
-	def visit_with_context(self, trial: Visitable, condition_name: str):
+	def visit_condition(self, condition: Condition, condition_name: str):
 		pass
 
-	def visit(self, trial: Visitable):
+	def visit(self, trial: Trial):
 		self.number_trials_visited += 1

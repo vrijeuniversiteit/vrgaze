@@ -14,7 +14,7 @@ class Visitor(ABC):
 		...
 
 	@abstractmethod
-	def visit_with_context(self, trial: Visitable, condition_name: str):
+	def visit_condition(self, condition: "Condition", condition_name: str):
 		...
 
 @dataclass

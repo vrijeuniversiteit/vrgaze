@@ -12,7 +12,7 @@ def plot_gaze_ball_angle(data, trial_number: int = 0, time_after_bounce: float =
 
 	finder = TrialFinder(trial_number)
 	for condition in data.conditions:
-		finder.visit_with_context(condition, condition.name)
+		finder.visit_condition(condition, condition.name)
 
 	if finder.trial_not_found:
 		print(f"Trial not found for plotting, searched through {finder.current_trial_number} trials...")
