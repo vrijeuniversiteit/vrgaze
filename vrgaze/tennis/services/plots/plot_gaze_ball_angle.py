@@ -69,9 +69,10 @@ def plot_gaze_ball_angle(data, trial_number: int = 0, time_after_bounce: float =
 
 	# Description of Plot 1
 	ax2.axis("off")
-	text = "The green line shows the moment of ball bounce. All the predictive saccades are highlighted in light " \
-		   "blue, the corrective saccades in light red. In case there is a predictive saccade within the time window " \
-		   "just before the bounce, the predictive saccade is shown in solid red"
+	text = "The green line shows the moment of ball bounce. All the predictive saccades are highlighted. Corrective " \
+		   "saccades are highlighted in light blue, the predictive saccades in light red. In case there is a " \
+		   "predictive saccade within the time window of interest (e.g. the last 400 ms before before bounce) " \
+		   "the predictive saccade is shown in solid red."
 	wrapped_text = textwrap.fill(text)
 	ax2.text(0, 1, wrapped_text, ha="left", va="top", wrap=True)
 
