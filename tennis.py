@@ -22,7 +22,7 @@ plot = plot_birdview(data)
 plot.savefig("plot_birdview.png")
 plot.show()
 
-plot_side(data)
+plot = plot_side(data)
 plot.savefig("plot_side.png")
 plot.show()
 
