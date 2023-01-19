@@ -1,7 +1,8 @@
 import csv
 import dataclasses
+import math
 from dataclasses import field, dataclass
-from typing import List
+from typing import List, Optional
 
 from vrgaze.tennis.models.common import Visitable, Visitor
 from vrgaze.tennis.models.balleventmodels import FirstBounceEvent, BallHitFrontWall, SecondBounceEvent
@@ -16,18 +17,18 @@ class TrialExportData:
 	BlockNumber: str
 	TestID: str
 	IsValid: bool
-	FirstBounceTimestamp: float
-	FirstBouncePositionX: float
-	FirstBouncePositionY: float
-	FirstBouncePositionZ: float
-	BallLandingPositionX: float
-	BallLandingPositionY: float
-	BallLandingPositionZ: float
-	BallDistanceToTarget: float
-	SaccadeTimestamp: float
-	SaccadeAngleAmplitude: float
-	AngleBallToGazeAtSaccadeStart: float
-	AngleBallToGazeAtSaccadeEnd: float
+	FirstBounceTimestamp: Optional[float]
+	FirstBouncePositionX: Optional[float]
+	FirstBouncePositionY: Optional[float]
+	FirstBouncePositionZ: Optional[float]
+	BallLandingPositionX: Optional[float]
+	BallLandingPositionY: Optional[float]
+	BallLandingPositionZ: Optional[float]
+	BallDistanceToTarget: Optional[float]
+	SaccadeTimestamp: Optional[float]
+	SaccadeAngleAmplitude: Optional[float]
+	AngleBallToGazeAtSaccadeStart: Optional[float]
+	AngleBallToGazeAtSaccadeEnd: Optional[float]
 
 
 @dataclass
@@ -48,15 +49,29 @@ class CSVWriter(Visitor):
 
 		if len(second_bounces) == 0:
 			second_bounce = None
+		else:
+			second_bounce = second_bounces[0]
 
 		is_trial_valid = True
 		hit_front_wall = [event for event in trial.ball_events if isinstance(event, BallHitFrontWall)]
 		if len(hit_front_wall) > 0:
 			hit_front_wall_timestamp = hit_front_wall[0].timestamp_start
-			if (second_bounce != None) & (second_bounce.timestamp > hit_front_wall_timestamp):
-				is_trial_valid = False
+			if second_bounce != None:
+				if second_bounce.timestamp_start > hit_front_wall_timestamp:
+					is_trial_valid = False
 
 		predictive_saccade_of_interest = [sac for sac in predictive_saccades if sac.is_within_bounce_window]
+
+		if trial.result_location_x == None:
+			result_x = None
+			result_y = None
+			result_z = None
+			ball_distance_to_target = None
+		else:
+			result_x = f"{trial.result_location_x:.3f}"
+			result_y = f"{trial.result_location_y:.3f}"
+			result_z = f"{trial.result_location_z:.3f}"
+			ball_distance_to_target = f"{trial.distance_to_closest_target:.3f}"
 
 		if len(predictive_saccade_of_interest) == 0:
 			trial_export_data = TrialExportData(
@@ -70,10 +85,10 @@ class CSVWriter(Visitor):
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
-				BallLandingPositionX=f"{trial.result_location_x:.3f}",
-				BallLandingPositionY=f"{trial.result_location_y:.3f}",
-				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
-				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}",
+				BallLandingPositionX=result_x,
+				BallLandingPositionY=result_y,
+				BallLandingPositionZ=result_z,
+				BallDistanceToTarget=ball_distance_to_target,
 				SaccadeTimestamp=None,
 				SaccadeAngleAmplitude=None,
 				AngleBallToGazeAtSaccadeStart=None,
@@ -93,10 +108,10 @@ class CSVWriter(Visitor):
 				FirstBouncePositionX=f"{first_bounce.frame.ball_position_x:.3f}",
 				FirstBouncePositionY=f"{first_bounce.frame.ball_position_y:.3f}",
 				FirstBouncePositionZ=f"{first_bounce.frame.ball_position_z:.3f}",
-				BallLandingPositionX=f"{trial.result_location_x:.3f}",
-				BallLandingPositionY=f"{trial.result_location_y:.3f}",
-				BallLandingPositionZ=f"{trial.result_location_z:.3f}",
-				BallDistanceToTarget=f"{trial.distance_to_closest_target:.3f}",
+				BallLandingPositionX=result_x,
+				BallLandingPositionY=result_y,
+				BallLandingPositionZ=result_z,
+				BallDistanceToTarget=ball_distance_to_target,
 				SaccadeTimestamp=f"{saccade.timestamp_start:.3f}",
 				SaccadeAngleAmplitude=f"{saccade.angle_amplitude:.3f}",
 				AngleBallToGazeAtSaccadeStart=f"{saccade.angle_start:.3f}",
@@ -111,6 +126,7 @@ class CSVWriter(Visitor):
 
 	def save(self, filepath):
 		dict_data = []
+
 		for data_point in self.data:
 			dict_data.append(dataclasses.asdict(data_point))
 

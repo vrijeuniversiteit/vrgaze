@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 
 from vrgaze.tennis import ExperimentalData
 from vrgaze.tennis.models.datamodel import Trajectory
+from vrgaze.tennis.services.plots.trial_enumerator import TrialEnumerator
 
 
 def plot_side(data: ExperimentalData):
@@ -15,11 +16,19 @@ def plot_side(data: ExperimentalData):
 	plt.plot([0, 0], [0, 1.065], color="black", linewidth=2)
 
 	trajectories = []
-	for trial in data.conditions[0].participants[0].trials:
+	enumerator = TrialEnumerator()
+	data.process(enumerator)
+	for trial in enumerator.trials:
 		length = [frame.ball_position_z for frame in trial.frames]
 		height = [frame.ball_position_y for frame in trial.frames]
 		trajectories.append(Trajectory(length, height, []))
+
+	number_of_trajectories = len(trajectories)
+	alpha = 1 / number_of_trajectories
+	if number_of_trajectories > 100:
+		alpha = 0.01
+
 	for trajectory in trajectories:
-		plt.plot(trajectory.length, trajectory.height)
+		plt.plot(trajectory.length, trajectory.height, c='black', alpha=alpha)
 
 	return plt

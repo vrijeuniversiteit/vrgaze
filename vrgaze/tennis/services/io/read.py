@@ -78,7 +78,15 @@ class Reader:
 					result_location_x = float(last_line[14])
 					result_location_y = float(last_line[15])
 					result_location_z = float(last_line[16])
-					distance_to_closest_target = float(last_line[18])
+
+					if result_location_x == 99999.0:
+						result_location_x = None
+						result_location_y = None
+						result_location_z = None
+						distance_to_closest_target = None
+
+					else:
+						distance_to_closest_target = float(last_line[18])
 
 					trials.append(
 						Trial(

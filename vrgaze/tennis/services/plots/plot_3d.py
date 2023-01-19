@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 
 from vrgaze.tennis import ExperimentalData
 from vrgaze.tennis.models.datamodel import Trajectory
-from vrgaze.tennis.models.gazeeventmodels import PredictiveSaccade
+from vrgaze.tennis.services.plots.trial_enumerator import TrialEnumerator
 
 
 def plot_3d(data: ExperimentalData) -> plt:
@@ -17,18 +17,23 @@ def plot_3d(data: ExperimentalData) -> plt:
 		>>> plot.savefig("plot_3d.png")
 	"""
 
-	ax = plt.axes(projection='3d')
-	greys = ['#000000', '#333333', '#666666', '#999999']
-	ax.prop_cycle = 'cycler(color, ' + str(greys) + ')'
-
 	trajectories = []
-	for trial in data.conditions[0].participants[0].trials:
+	enumerator = TrialEnumerator()
+	data.process(enumerator)
+	for trial in enumerator.trials:
 		width = [frame.ball_position_x for frame in trial.frames]
 		length = [frame.ball_position_z for frame in trial.frames]
 		height = [frame.ball_position_y for frame in trial.frames]
 		trajectories.append(Trajectory(length, height, width))
+
+	number_of_trajectories = len(trajectories)
+	alpha = 1 / number_of_trajectories
+	if number_of_trajectories > 100:
+		alpha = 0.01
+
+	ax = plt.axes(projection='3d')
 	for trajectory in trajectories:
-		ax.plot3D(trajectory.width, trajectory.length, trajectory.height)
+		ax.plot3D(trajectory.width, trajectory.length, trajectory.height, c='black', alpha=alpha)
 
 	half_width = 10.97 / 2
 	half_length = 23.77 / 2
@@ -63,20 +68,6 @@ def plot_3d(data: ExperimentalData) -> plt:
 	# net posts
 	ax.plot([-half_net_width, -half_net_width], [0, 0], [0, 1.065], color='black')
 	ax.plot([half_net_width, half_net_width], [0, 0], [0, 1.065], color='black')
-
-	for trial in data.conditions[0].participants[0].trials:
-		predictive_saccades = trial.gaze_events
-		for saccade in predictive_saccades:
-			if isinstance(saccade, PredictiveSaccade):
-				start_x = saccade.end_frame.ball_position_x
-				start_y = saccade.end_frame.ball_position_z
-				start_z = saccade.end_frame.ball_position_y
-				ax.scatter3D(start_x, start_y, start_z, color='green', marker='o', s=20, alpha=0.5)
-				end_x = saccade.frame.ball_position_x
-				end_y = saccade.frame.ball_position_z
-				end_z = saccade.frame.ball_position_y
-				# filled point green at end
-				ax.scatter3D(end_x, end_y, end_z, color='green', marker='o', s=20, alpha=1)
 
 	ax.set_aspect('equal')
 	ax.set_zlim(bottom=0)
