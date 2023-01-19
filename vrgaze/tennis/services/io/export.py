@@ -44,7 +44,14 @@ class CSVWriter(Visitor):
 		predictive_saccades = [event for event in trial.gaze_events if isinstance(event, PredictiveSaccade)]
 		condition = self.condition
 
-		first_bounce = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)][0]
+		first_bounce = [event for event in trial.ball_events if isinstance(event, FirstBounceEvent)]
+
+		if len(first_bounce) == 0:
+			print("No first bounce event found for trial")
+			return
+
+		first_bounce = first_bounce[0]
+
 		second_bounces = [event for event in trial.ball_events if isinstance(event, SecondBounceEvent)]
 
 		if len(second_bounces) == 0:
