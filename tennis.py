@@ -2,7 +2,9 @@ from vrgaze.tennis import load_condition, ExperimentalData, plot_3d, plot_birdvi
 from vrgaze.tennis import plot_gaze_ball_angle
 
 """
-1. Place all experimental data in a folder called 'data' in the root of your project.
+1. Copy this script and put it at the root/main folder of your project. Call the script `main.py`.
+2. Place all experimental data (csv files) in a folder called 'data' in the root of your project.
+3. Inside of the folder, it is possible to creat sub-folders for each experimental conditions. See the function load_condition for more details.
 The folder structure should look like this:
 project root folder/
 │
@@ -14,12 +16,15 @@ project root folder/
 │       ├── participant_3.csv
 │       └── participant_4.csv
 │
-├── THIS_SCRIPT.py
+├── main.py
 
-2. Set the group names (here: Experts and Novices) and the path to the data folder
+4. Set the group names in this script (here for example: Experts and Novices) 
+5. Set the path to the data folder (where the data is located, relative to this script)
+6. Run this script
 """
-experts = load_condition("Experts", "data/GROUP_1_NAME/")
-novices = load_condition("Novices", "data/GROUP_2_NAME/")
+
+experts = load_condition("Experts", "data/GROUP_1_NAME")
+novices = load_condition("Novices", "data/GROUP_2_NAME")
 
 data = ExperimentalData([novices, experts])
 data.analyze_trials()
@@ -27,7 +32,10 @@ data.to_csv("example_results.csv")
 
 should_plot = True
 if should_plot:
-    plot = plot_gaze_ball_angle(data, trial_number=5)
+    # Visualize the gaze data for a specific trial
+    # Adjust the desired trial as needed or loop over all trials to generate plots for all trials
+    DESIRED_TRIAL = 5
+    plot = plot_gaze_ball_angle(data, trial_number=DESIRED_TRIAL)
     plot.savefig("plot_gaze_ball_angle.png")
     plot.show()
 
