@@ -25,7 +25,7 @@ data = ExperimentalData([novices, experts])
 data.analyze_trials()
 data.to_csv("example_results.csv")
 
-should_plot = False
+should_plot = True
 if should_plot:
     plot = plot_gaze_ball_angle(data, trial_number=5)
     plot.savefig("plot_gaze_ball_angle.png")

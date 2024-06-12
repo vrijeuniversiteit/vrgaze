@@ -21,7 +21,8 @@ class Reader:
 			resource_name = 'example_data/tennis_data/experimental_condition'
 			for file in metadata.files(package_name):
 				if resource_name in str(file):
-					path = str(Path(file).parent)
+					path = str(Path(file.locate()).parent)
+					break
 
 		files = glob.glob(path + "/*.csv")
 		self.number_files = len(files)
