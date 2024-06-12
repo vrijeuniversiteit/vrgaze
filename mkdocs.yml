@@ -29,5 +29,5 @@ plugins:
 
 markdown_extensions:
   - pymdownx.snippets:
-      base_path: docs
+      base_path: .
       check_paths: true

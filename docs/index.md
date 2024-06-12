@@ -16,7 +16,7 @@ pip install --upgrade git+https://github.com/vrijeuniversiteit/vrgaze.git
 ## Analyzing tennis data
 
 ```python
---8<-- "../tennis.py"
+--8<-- "tennis.py"
 ```
 
 ## Examples

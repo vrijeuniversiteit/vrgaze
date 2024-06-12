@@ -1,4 +1,3 @@
-
 from vrgaze.tennis import load_condition, ExperimentalData, plot_3d, plot_birdview, plot_side
 from vrgaze.tennis import plot_gaze_ball_angle
 
@@ -51,6 +50,3 @@ if should_plot:
     plot = plot_side(data)
     plot.savefig("plot_side.png")
     plot.show()
-
-
-
