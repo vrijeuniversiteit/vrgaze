@@ -1,5 +1,6 @@
-# Run sudo pre-commit install --overwrite
-# Needs pip install pre-commit
+# To install pre-commit, which are steps that are run before a commit is made, run
+# pip install pre-commit
+# pre-commit install --overwrite
 
 repos:
 - repo: local

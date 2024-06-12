@@ -2,11 +2,11 @@ from vrgaze.tennis.models.datamodel import Condition
 from vrgaze.tennis.services.io.read import Reader
 
 
-def load_condition(name: str, folder_path: str) -> Condition:
+def load_condition(group_name: str, folder_path: str) -> Condition:
 	"""Load data from an experimental condition
 
 	Args:
-		name (str): Name of the experimental condition.
+		group_name (str): Name of the experimental condition.
 		folder_path (str): Path to the folder containing the data files
 
 	Returns:
@@ -20,8 +20,6 @@ def load_condition(name: str, folder_path: str) -> Condition:
 		>>>
 		>>> data = ExperimentalData(condition)
 
-
-
 		# For several conditions:
 		>>> experts = load_condition("Experts", "path/to/folder")
 		>>> novices = load_condition("Novices", "path/to/folder")
@@ -31,6 +29,6 @@ def load_condition(name: str, folder_path: str) -> Condition:
 	reader = Reader()
 	reader.discover_files(folder_path)
 	reader.read_files()
-	condition = Condition(name, reader.participants)
+	condition = Condition(group_name, reader.participants)
 
 	return condition

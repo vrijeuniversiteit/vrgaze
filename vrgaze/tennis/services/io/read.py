@@ -1,5 +1,7 @@
 import glob
 import os
+from importlib import metadata
+from pathlib import Path
 
 from vrgaze.tennis.models.datamodel import Trial, Frame, Participant
 
@@ -14,7 +16,12 @@ class Reader:
 
 	def discover_files(self, path):
 		if not os.path.exists(path):
-			raise FileNotFoundError(f"Folder {path} does not exist.")
+			print(f"Folder {path} does not exist. Make sure that the files are placed at the path. For demo purposes, the app is using fallback data")
+			package_name = 'vrgaze'
+			resource_name = 'example_data/tennis_data/experimental_condition'
+			for file in metadata.files(package_name):
+				if resource_name in str(file):
+					path = str(Path(file).parent)
 
 		files = glob.glob(path + "/*.csv")
 		self.number_files = len(files)
