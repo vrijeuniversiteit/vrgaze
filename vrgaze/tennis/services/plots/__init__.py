@@ -32,11 +32,3 @@ plt.rcParams.update(
 		'ytick.color': 'black'
 	}
 )
-
-if matplotlib.checkdep_usetex("pdflatex"):
-	plt.rcParams.update(
-		{
-			'font.family': 'serif',
-			'text.usetex': True,
-		}
-	)
