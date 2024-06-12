@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='vrgaze',
-	version="1.8.34",
+	version="1.8.35",
 	url='https://github.com/vrijeuniversiteit/vrgaze.git',
 	author='Daniel Müller',
 	author_email='d.muller at vu.nl',
@@ -17,7 +17,7 @@ setup(
 	},
 	install_requires=['matplotlib ~= 3.9.0'],
 	extras_require={
-		'website': ['mkdocs-material~=8.5.11', 'mkdocstrings-python~=0.8.2'],
+		'website': ['mkdocs-material~=8.5.11', 'mkdocstrings-python~=1.10.3'],
 		'dev': ['pre-commit ~= 2.21']
 	},
 	python_requires=">=3.6",
